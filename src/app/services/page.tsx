@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import CTASection from "@/components/CTASection";
 import { FaArrowRight, FaArrowDown } from "react-icons/fa";
-import { getGlobalData, getPageBySlug } from "@/data/loader";
+import { getGlobalData, getPageBySlug, getHomepageQuery } from "@/data/loader";
+import LogoLoop from "@/components/homepage/LogoLoop";
+import { getStrapiMedia } from "@/lib/utils";
 
 export default async function Services() {
-  // 1. Keep API Data Logic Exactly the Same
+  // 1. Existing Page Data Fetching
   const response = await getPageBySlug("services");
   const serviceBlock = response.data[0]?.blocks?.find(
     (block: any) => block.__component === "blocks.service"
@@ -16,9 +18,23 @@ export default async function Services() {
   const globalresponse = await getGlobalData();
   const cta = globalresponse?.data?.cta[0];
 
+  // 2. Fetch Homepage data to get the Partner Brands (Collaborations)
+  const homepageResponse = await getHomepageQuery();
+  const collaborations = homepageResponse?.data?.blocks?.find(
+    (block: any) => block.__component === "homepage.collaborations"
+  );
+
+  // 3. Transform data for the LogoLoop component
+  const logos =
+    collaborations?.brands?.map((brand: any) => ({
+      src: getStrapiMedia(brand.url),
+      alt: brand.name,
+      title: brand.name,
+    })) || [];
+
   return (
     <main className="bg-white min-h-screen text-zinc-900 selection:bg-black selection:text-white">
-      {/* 2. Redesigned Hero Section (Immersive & Typographic) */}
+      {/* --- Redesigned Hero Section (Immersive & Typographic) --- */}
       <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 border-b border-zinc-200">
         {/* Background Video with refined overlay */}
         <div className="absolute inset-0 z-0 overflow-hidden">
@@ -31,11 +47,11 @@ export default async function Services() {
           >
             <source src={herosection?.video?.url} type="video/mp4" />
           </video>
-          {/* A sophisticated gradient overlay instead of flat black */}
+          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
         </div>
 
-        {/* Content */}
+        {/* Hero Content */}
         <div className="relative z-10 w-full max-w-7xl mx-auto">
           <span className="inline-block px-4 py-2 mb-6 rounded-full border border-zinc-800 bg-white/80 backdrop-blur-md text-xs font-mono uppercase tracking-widest">
             Our Capabilities
@@ -59,7 +75,7 @@ export default async function Services() {
         </div>
       </section>
 
-      {/* 3. Redesigned Services Loop (Sticky Layout) */}
+      {/* --- Redesigned Services Loop (Sticky Layout) --- */}
       <div className="w-full px-6 md:px-12 py-24 bg-white">
         <div className="max-w-7xl mx-auto space-y-32">
           {services.map((service: any, index: number) => (
@@ -124,7 +140,7 @@ export default async function Services() {
                     )
                   )}
 
-                  {/* "Get Quote" Card - Stylized to match the minimalist theme */}
+                  {/* "Get Quote" Card */}
                   <div className="group relative w-full aspect-[4/3] bg-zinc-900 text-white flex flex-col justify-between p-8 overflow-hidden">
                     <div className="relative z-10">
                       <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center mb-6">
@@ -154,6 +170,28 @@ export default async function Services() {
           ))}
         </div>
       </div>
+
+      {/* --- NEW SECTION: Logo Loop (Clients) --- */}
+      {logos.length > 0 && (
+        <section className="w-full py-24 bg-zinc-50 border-t border-zinc-200">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <h3 className="text-sm font-mono uppercase tracking-widest text-center text-zinc-500 mb-12">
+              Trusted by Industry Leaders
+            </h3>
+            <div className="relative h-32 flex items-center overflow-hidden">
+              <LogoLoop
+                logos={logos}
+                speed={50}
+                direction="left"
+                logoHeight={60}
+                gap={80}
+                pauseOnHover
+                fadeOut
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       <CTASection data={cta} />
     </main>

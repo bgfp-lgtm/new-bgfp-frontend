@@ -85,7 +85,7 @@ export default function Loop({ data }: any) {
     <section className="w-full py-20 bg-linear-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
         <div className="text-center mb-16">
-          <p className="text-sm uppercase tracking-widest text-blue-600 dark:text-blue-400 font-medium">
+          <p className="text-sm uppercase tracking-widest text-gray-500 dark:text-blue-400 font-medium">
             {data.subtitle}
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mt-4 mb-6">

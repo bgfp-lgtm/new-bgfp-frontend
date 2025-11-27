@@ -45,7 +45,7 @@ export default function Services({ data }: any) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl md:text-7xl w-full mb-4 font-bold"
+          className="text-4xl md:text-7xl w-full mb-4 font-bold text-center"
         >
           {data.title || "Services"}
         </motion.h1>

@@ -182,9 +182,14 @@ export default function IntroSection({ data }: any) {
                 {/* Four cards */}
                 <div className="grid grid-cols-2 gap-4">
                   {data?.right_block?.map((item: any, index: number) => (
-                    <Link href={`/${slugify(item.title)}`} key={item.id}>
+                    <Link
+                      href={`/${slugify(item.title)}`}
+                      key={item.id}
+                      // This class ensures the last item spans full width if the total count is odd
+                      className="last:odd:col-span-2"
+                    >
                       <motion.div
-                        className="group p-4 rounded-xl bg-white border border-gray-100 hover:border-red-200 hover:shadow-md transition-all"
+                        className="group h-full p-4 rounded-xl bg-white border border-gray-100 hover:border-red-200 hover:shadow-md transition-all"
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

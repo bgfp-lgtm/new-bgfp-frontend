@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
         hostname: "delightful-trust-ed829e5176.media.strapiapp.com",
         protocol: "https",
       },
+      // --- ADD THIS BLOCK ---
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+      },
+      // ---------------------
     ],
   },
 

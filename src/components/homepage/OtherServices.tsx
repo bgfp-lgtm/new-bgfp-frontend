@@ -316,7 +316,7 @@ export default function OtherServices({ data, readyData }: any) {
             onMouseLeave={() => carousel.setIsHovered(false)}
           >
             {/* Carousel Container */}
-            <div className="overflow-hidden rounded-2xl">
+            <div className="overflow-hidden rounded-2xl py-12 -my-12">
               <motion.div
                 className={`flex transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${carousel.transitionClass}`}
                 style={carousel.slideStyle}

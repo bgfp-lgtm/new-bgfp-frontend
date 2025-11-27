@@ -80,7 +80,7 @@ export default function CTASection({ data }: any) {
                   ease: "easeOut",
                   delay: 0.6 + index * 0.2, // Staggered delay
                 }}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-red-500/50 transition-all duration-300 group"
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-7 border border-white/20 hover:border-red-500/50 transition-all duration-300 group"
               >
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500/20 rounded-full mb-6 group-hover:bg-red-500/30 transition-colors duration-300">

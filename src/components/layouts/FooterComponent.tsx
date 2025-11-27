@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { BsInstagram, BsLinkedin, BsTiktok } from "react-icons/bs";
@@ -23,7 +23,7 @@ export default function FooterComponent({ data }: any) {
         <div className="absolute -top-24 right-0 w-72 h-72 rounded-full bg-red-600/10 blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 py-16">
+      <div className="max-w-8xl mx-auto px-6 md:px-10 lg:px-12 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Section 1: Brand and Socials */}
           <div>
@@ -33,7 +33,7 @@ export default function FooterComponent({ data }: any) {
             <p className="text-gray-400 leading-relaxed mb-6 max-w-sm">
               {data?.description}
             </p>
-            <div className="flex items-center gap-4 text-gray-400">
+            <div className="flex items-center w-full gap-4 lg:gap-16 text-gray-400">
               {data?.socials?.map((social: any, index: number) => {
                 const IconComponent = icons[index];
                 return (
@@ -45,7 +45,7 @@ export default function FooterComponent({ data }: any) {
                     className="hover:text-white transition-colors"
                     aria-label={social.name}
                   >
-                    <IconComponent className="w-5 h-5" />
+                    <IconComponent className="w-6 h-6" />
                   </Link>
                 );
               })}
@@ -96,32 +96,39 @@ export default function FooterComponent({ data }: any) {
           </div>
 
           {/* Section 5: Stay in the loop (Newsletter) */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">
+          {/* Newsletter Section - Wrapped in a container for better layout separation */}
+          <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-800">
+            <h4 className="text-white font-semibold mb-3">
               {data?.loop?.title}
             </h4>
-            <p className="text-gray-400 text-sm mb-4">
+            <p className="text-gray-400 text-sm mb-6 leading-relaxed">
               {data?.loop?.description}
             </p>
+
             <form
               onSubmit={(e) => e.preventDefault()}
-              className="flex items-center gap-2"
+              className="flex flex-col sm:flex-col gap-3 items-center"
             >
               <input
                 type="email"
                 required
                 aria-label="Email address"
                 placeholder="Your email address"
-                className="w-full rounded-md bg-gray-900 border border-gray-800 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                // FIX: Added 'sm:flex-1' to make it expand to fill space on desktop
+                className="w-full sm:flex-1 rounded-lg bg-gray-800 border border-gray-700 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all"
               />
               <button
                 type="submit"
-                className="rounded-md bg-red-600 hover:bg-red-700 text-white px-4 py-3 text-sm font-medium transition-colors"
+                // FIX: Added 'w-full sm:w-auto' so it shrinks to text width on desktop
+                className=" rounded-lg bg-red-600 hover:bg-red-700 text-white p-1 w-full text-sm font-medium py-3 transition-colors whitespace-nowrap shadow-lg shadow-red-900/20 flex items-center justify-center"
               >
                 Subscribe
               </button>
             </form>
-            <p className="mt-3 text-xs text-gray-500">{data?.loop?.subtitle}</p>
+
+            <p className="mt-4 text-md w-full text-gray-600">
+              {data?.loop?.subtitle}
+            </p>
           </div>
         </div>
 

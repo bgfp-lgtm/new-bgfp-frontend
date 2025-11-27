@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react"; // Needed for the plugin ref
 import { motion } from "framer-motion";
 import {
   Carousel,
@@ -8,8 +9,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay"; // Import Autoplay
 import { LuStar } from "react-icons/lu";
-// Import your StrapiImage component
 import Image from "next/image";
 
 const StarRating = ({ rating }: { rating: number }) => {
@@ -28,12 +29,17 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 export default function CustomerTestimonials({ data }: any) {
-  // Don't render if there's no data
+  // 1. Create the plugin instance for Auto-move
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
+
   if (!data?.testimonials) return null;
 
   return (
-    <section className="py-24 bg-gray-50 min-h-[800px]">
+    <section className="py-24 bg-gray-50">
       <div className="container mx-auto px-4">
+        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -49,6 +55,7 @@ export default function CustomerTestimonials({ data }: any) {
           </p>
         </motion.div>
 
+        {/* Carousel Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -57,56 +64,62 @@ export default function CustomerTestimonials({ data }: any) {
           className="relative"
         >
           <Carousel
+            plugins={[plugin.current]} // Add the autoplay plugin here
             opts={{
               align: "start",
               loop: true,
             }}
-            className="w-full max-w-5xl mx-auto"
+            className="w-full max-w-6xl mx-auto" // Increased max-width for horizontal cards
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
           >
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {/* Map over the dynamic 'data.testimonials' array */}
+            <CarouselContent className="-ml-4 py-6">
               {data.testimonials.map((testimonial: any, index: number) => (
+                // Changed basis to usually show 2 cards on desktop for the wide layout
                 <CarouselItem
                   key={testimonial.id}
-                  className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
+                  className="pl-4 md:basis-1/2"
                 >
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col"
+                    // 2. LAYOUT CHANGE: flex-col on mobile, flex-row on desktop
+                    className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden h-full flex flex-col md:flex-row"
                   >
-                    {/* Image Section - Using StrapiImage */}
+                    {/* Image Section - Left Side on Desktop */}
                     {testimonial.image?.url && (
-                      <div className="relative h-72 w-full overflow-hidden">
+                      <div className="relative h-64 w-full md:h-auto md:w-2/5 shrink-0 overflow-hidden">
                         <Image
-                          width={200}
-                          height={200}
+                          width={400}
+                          height={400}
                           src={testimonial.image.url}
                           alt={`${testimonial.name}`}
-                          className="w-full h-full object-cover object-top transition-transform duration-300 hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
                       </div>
                     )}
 
-                    <div className="p-6 flex flex-col grow">
-                      <div className="mb-4">
-                        {/* Convert starCount string to a number */}
+                    {/* Content Section - Right Side on Desktop */}
+                    <div className="p-6 md:p-8 flex flex-col grow justify-center">
+                      <div className="mb-3">
                         <StarRating rating={+testimonial.starCount || 0} />
                       </div>
 
-                      <blockquote className="text-gray-700 mb-6 grow">
-                        <p className="text-sm leading-relaxed italic">
-                          {/* Render feedback, stripping outer quotes */}"
-                          {testimonial.feedback.replace(/^"|"$/g, "")}"
+                      <blockquote className="text-gray-700 mb-4 grow">
+                        {/* 3. LINE CLAMP: This fixes the 'uneven' height issue */}
+                        <p className="text-base leading-relaxed italic line-clamp-5 md:line-clamp-4">
+                          "{testimonial.feedback.replace(/^"|"$/g, "")}"
                         </p>
                       </blockquote>
 
-                      <div className="border-t pt-4">
-                        <div className="font-semibold text-gray-900 text-sm">
+                      <div className="mt-auto">
+                        <div className="font-bold text-gray-900 text-lg">
                           {testimonial.name}
+                        </div>
+                        <div className="text-sm text-gray-500 font-medium">
+                          Verified Customer
                         </div>
                       </div>
                     </div>
@@ -115,19 +128,10 @@ export default function CustomerTestimonials({ data }: any) {
               ))}
             </CarouselContent>
 
-            <CarouselPrevious className="hidden md:flex -left-12" />
-            <CarouselNext className="hidden md:flex -right-12" />
+            <CarouselPrevious className="hidden md:flex -left-12 bg-white hover:bg-gray-100" />
+            <CarouselNext className="hidden md:flex -right-12 bg-white hover:bg-gray-100" />
           </Carousel>
         </motion.div>
-
-        {/* Mobile navigation dots */}
-        <div className="flex justify-center mt-8 md:hidden">
-          <div className="flex space-x-2">
-            {data.testimonials.slice(0, 3).map((_: any, index: number) => (
-              <div key={index} className="w-2 h-2 bg-gray-300 rounded-full" />
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
