@@ -4,6 +4,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import CTASection from "@/components/CTASection";
 import { getStrapiMedia } from "@/lib/utils";
+import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa";
 
 // --- Helper Component ---
 const SafeImage = ({
@@ -337,10 +339,19 @@ export default function AboutUs({
           <h3 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
             Ready to Collaborate?
           </h3>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
             BGFP is always open to exploring new opportunities and partnerships.
             Let's create something extraordinary together.
           </p>
+
+          {/* CTA Button Added Here */}
+          <Link
+            href="/contact"
+            className="group relative inline-flex items-center justify-center bg-red-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-red-700 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:-translate-y-1"
+          >
+            <span className="mr-2">Contact Us</span>
+            <FaArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </motion.footer>
       </motion.div>
     </div>

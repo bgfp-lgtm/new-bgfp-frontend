@@ -72,11 +72,11 @@ export default function Services({ data }: any) {
                     src={card.image.url}
                     alt={card.title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110 hover:opacity-20"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/95 hover:backdrop-blur-md via-black/70 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
                 </div>
 
                 {/* 2. Floating Icon Badge */}

@@ -5,6 +5,8 @@ import { FaArrowRight, FaArrowDown } from "react-icons/fa";
 import { getGlobalData, getPageBySlug, getHomepageQuery } from "@/data/loader";
 import LogoLoop from "@/components/homepage/LogoLoop";
 import { getStrapiMedia } from "@/lib/utils";
+import NewsletterSection from "@/components/NewsletterSection";
+// 1. Import the Newsletter Component
 
 export default async function Services() {
   // --- Data Fetching ---
@@ -32,7 +34,7 @@ export default async function Services() {
 
   return (
     <main className="bg-white min-h-screen text-zinc-900 selection:bg-black selection:text-white">
-      {/* --- 1. HERO SECTION (Kept as requested) --- */}
+      {/* --- 1. HERO SECTION --- */}
       <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 px-6 md:px-12 bg-zinc-900 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <video
@@ -71,7 +73,7 @@ export default async function Services() {
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12 py-32">
           {services.map((service: any, index: number) => (
             <div key={index} className="mb-48 last:mb-0">
-              {/* Category Header (Centered & Clean) */}
+              {/* Category Header */}
               <div className="text-center max-w-5xl mx-auto mb-24">
                 <span className="inline-block py-1 px-3 border border-zinc-200 rounded-full text-xs font-bold uppercase tracking-widest text-zinc-400 mb-6">
                   0{index + 1} — {service.title}
@@ -140,13 +142,16 @@ export default async function Services() {
                     );
                   }
                 )}
+                <NewsletterSection />
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* --- 3. Logo Loop --- */}
+      {/* --- 3. NEWSLETTER SECTION (Added Here) --- */}
+
+      {/* --- 4. Logo Loop --- */}
       {logos.length > 0 && (
         <section className="w-full py-24 bg-zinc-50 border-t border-zinc-200">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">

@@ -1,9 +1,17 @@
+/*  */
 "use client";
 
 import React, { useState } from "react";
 import Image from "next/image";
 import CTASection from "@/components/CTASection";
-import { FaArrowRight, FaPlus, FaMinus } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaPlus,
+  FaMinus,
+  FaBullhorn,
+  FaChartLine,
+} from "react-icons/fa";
+import Link from "next/link";
 
 export default function MarketingStrategyPage() {
   const [activeTrend, setActiveTrend] = useState<number | null>(0);
@@ -12,49 +20,56 @@ export default function MarketingStrategyPage() {
     setActiveTrend(activeTrend === index ? null : index);
   };
 
-  const steps = [
+  const pillars = [
     {
-      number: "01",
-      title: "Market Research",
-      desc: "Data-driven insights into customer behavior and trends.",
+      title: "Traditional Media",
+      description:
+        "The foundation of mass awareness. Print, Broadcast, OOH, and Direct Mail strategies for broad demographic targeting and high-trust local presence.",
+      image:
+        "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1000&auto=format&fit=crop",
+      icon: <FaBullhorn className="w-4 h-4" />,
     },
     {
-      number: "02",
+      title: "Digital Ecosystems",
+      description:
+        "Precision targeting with real-time attribution. SEO, SEM, Social Commerce, and Content Engines driving modern growth.",
+      image:
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
+      icon: <FaChartLine className="w-4 h-4" />,
+    },
+  ];
+
+  const steps = [
+    {
+      title: "Market Research",
+      desc: "Data-driven insights into customer behavior.",
+    },
+    {
       title: "Identify Goals",
       desc: "Define clear, measurable objectives (KPIs, ROAS).",
     },
     {
-      number: "03",
       title: "Target Audience",
       desc: "Create detailed personas and understand pain points.",
     },
     {
-      number: "04",
       title: "Competitor Analysis",
       desc: "Identify gaps in the market and capitalize on them.",
     },
     {
-      number: "05",
       title: "Value Proposition",
       desc: "Define your unique angle and why you matter.",
     },
     {
-      number: "06",
       title: "Budget Allocation",
       desc: "Strategic resource distribution for maximum impact.",
     },
     {
-      number: "07",
       title: "Content Strategy",
       desc: "Crafting the narrative and tone of voice.",
     },
+    { title: "Launch Campaign", desc: "Execution across selected channels." },
     {
-      number: "08",
-      title: "Launch Campaign",
-      desc: "Execution across selected channels.",
-    },
-    {
-      number: "09",
       title: "Monitor & Optimize",
       desc: "Real-time analytics and performance tuning.",
     },
@@ -70,10 +85,6 @@ export default function MarketingStrategyPage() {
       desc: "Leveraging big data for granular decision making.",
     },
     {
-      title: "Content Evolution",
-      desc: "Interactive, user-generated, and long-form value.",
-    },
-    {
       title: "Social Commerce",
       desc: "Seamless shopping experiences within social apps.",
     },
@@ -82,203 +93,144 @@ export default function MarketingStrategyPage() {
       desc: "Short-form and live streaming as primary drivers.",
     },
     {
-      title: "Voice Search",
-      desc: "Optimizing for conversational queries and assistants.",
-    },
-    {
-      title: "Sustainability",
-      desc: "Eco-conscious branding as a core value proposition.",
-    },
-    {
-      title: "AR & VR",
-      desc: "Immersive brand experiences and virtual try-ons.",
-    },
-    {
       title: "Hyper-Personalization",
       desc: "Individualized customer journeys at scale.",
-    },
-    {
-      title: "Omnichannel",
-      desc: "Unified experience across physical and digital.",
     },
   ];
 
   return (
-    <main className="bg-zinc-50 min-h-screen text-black selection:bg-red-600 selection:text-white font-sans">
-      {/* 1. Typographic Hero with Video Overlay */}
-      <section className="relative w-full h-[90vh] flex flex-col justify-between rounded-b-3xl overflow-hidden">
-        <div className="absolute inset-0 z-0">
+    <main className="bg-white text-zinc-900 w-full min-h-screen selection:bg-red-600 selection:text-white">
+      {/* --- 1. Cinematic Hero Section (Matched to Film Page) --- */}
+      <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden">
+        {/* Background Video */}
+        <div className="absolute inset-0 w-full h-full z-0">
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover grayscale opacity-60"
+            className="w-full h-full object-cover opacity-90"
           >
-            {/* Replace with your actual video path */}
             <source src="/marketing.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
         </div>
 
-        {/* Top Tagline */}
-        <div className="relative z-10 px-6 md:px-12 pt-12 flex justify-between items-start">
-          <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm py-2 px-4 rounded-full">
-            <div className="w-3 h-3 bg-red-600 animate-pulse rounded-full"></div>
-            <span className="font-mono text-xs font-bold tracking-widest uppercase">
-              Est. 2025 / Global Strategy
+        {/* Hero Content */}
+        <div className="relative z-10 w-full max-w-screen-2xl mx-auto border-t border-white/20 pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
+            <span className="text-xs font-mono uppercase tracking-widest text-white/80">
+              Global Strategy
             </span>
           </div>
-        </div>
 
-        {/* Main Title Area */}
-        <div className="relative z-10 px-6 md:px-12 pb-16 text-white">
-          <h1 className="text-[10vw] leading-[0.9] font-black tracking-tighter uppercase drop-shadow-xl">
-            Marktng <br />
-            <span className="text-red-500">Strategy.</span>
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-8 text-white max-w-6xl">
+            Marketing <br /> & Strategy
           </h1>
-          <div className="mt-12 flex flex-col md:flex-row justify-between items-end border-t border-white/30 pt-8">
-            <p className="max-w-md text-xl font-medium leading-tight text-white/90">
+
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+            <p className="text-gray-200 text-lg md:text-xl max-w-2xl leading-relaxed">
               Comprehensive solutions to maximize reach. We don't just guess; we
-              engineer impact.
+              engineer impact through data and creativity.
             </p>
-            <div className="hidden md:flex items-center gap-3 font-bold uppercase tracking-widest text-sm bg-red-600 py-3 px-6 rounded-full mt-6 md:mt-0 hover:bg-red-700 transition-colors cursor-pointer">
-              Scroll for Analysis{" "}
-              <FaArrowRight className="rotate-90 text-white" />
+
+            <div className="flex items-center gap-4 text-white/60 text-xs font-mono uppercase tracking-widest">
+              <span>Scroll to Analyze</span>
+              <div className="h-px w-12 bg-white/40"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Traditional vs Digital (Visual Cards) */}
-      <section className="w-full max-w-[1800px] mx-auto px-6 md:px-12 py-24 grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Traditional Card */}
-        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl group hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
-          <div className="relative h-64 w-full mb-10 rounded-2xl overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1000&auto=format&fit=crop"
-              alt="Traditional advertising, newspapers and print media"
-              fill
-              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
-            />
-            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
-          </div>
-          <span className="block text-red-600 font-bold text-6xl mb-4 font-mono">
-            I.
-          </span>
-          <h2 className="text-4xl font-black uppercase mb-8">Traditional</h2>
-          <ul className="space-y-4">
-            {[
-              "Print Media & Press",
-              "Broadcast (TV/Radio)",
-              "OOH & Billboards",
-              "Direct Mail",
-            ].map((item, i) => (
-              <li
-                key={i}
-                className="flex items-center gap-4 text-xl font-medium border-b border-gray-100 pb-3"
-              >
-                <span className="w-2 h-2 bg-black rounded-full"></span>
-                {item}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8 text-gray-500 leading-relaxed font-medium">
-            The foundation of mass awareness. Best for broad demographic
-            targeting and high-trust local presence.
-          </p>
-        </div>
-
-        {/* Digital Card */}
-        <div className="bg-black text-white p-8 md:p-12 rounded-3xl shadow-xl group hover:shadow-2xl transition-all duration-500 relative overflow-hidden selection:bg-white selection:text-black">
-          <div className="relative h-64 w-full mb-10 rounded-2xl overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop"
-              alt="Digital analytics and data visualization on screens"
-              fill
-              className="object-cover opacity-60 group-hover:opacity-90 transition-all duration-700 scale-105 group-hover:scale-100"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+      {/* --- 2. Core Pillars (Architectural Grid - 2 Cols) --- */}
+      <section className="relative w-full px-6 md:px-12 py-24 bg-white">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-zinc-200 pb-8">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
+                Strategic Channels
+              </h2>
+              <p className="text-zinc-500 font-medium">
+                Bridging the gap between traditional trust and digital
+                precision.
+              </p>
+            </div>
           </div>
 
-          <span className="block text-red-600 font-bold text-6xl mb-4 font-mono relative z-10">
-            II.
-          </span>
-          <h2 className="text-4xl font-black uppercase mb-8 relative z-10">
-            Digital
-          </h2>
-          <ul className="space-y-4 relative z-10">
-            {[
-              "Social Ecosystems",
-              "SEO & SEM",
-              "Programmatic Ads",
-              "Content Engines",
-            ].map((item, i) => (
-              <li
-                key={i}
-                className="flex items-center gap-4 text-xl font-medium border-b border-gray-800 pb-3"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200 border border-zinc-200">
+            {pillars.map((pillar, index) => (
+              <div
+                key={index}
+                className="group relative bg-white h-full min-h-[500px] flex flex-col justify-between overflow-hidden hover:bg-zinc-50 transition-colors duration-500"
               >
-                <span className="w-2 h-2 bg-red-600 rounded-full"></span>
-                {item}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8 text-gray-400 leading-relaxed font-medium relative z-10">
-            Precision targeting with real-time attribution. The engine of modern
-            growth and community building.
-          </p>
-        </div>
-      </section>
+                {/* Header */}
+                <div className="p-8 md:p-10 pb-0 flex justify-between items-start">
+                  <span className="text-xs font-mono text-zinc-300">
+                    0{index + 1}
+                  </span>
+                  <div className="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-colors duration-300">
+                    <FaArrowRight className="w-3 h-3 text-zinc-300 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-300" />
+                  </div>
+                </div>
 
-      {/* 3. The Roadmap (Sticky Timeline with Visuals) */}
-      <section className="relative w-full py-24 px-6 md:px-12 max-w-[1800px] mx-auto">
-        <div className="flex flex-col lg:flex-row gap-12">
-          {/* Sticky Title Visual Panel */}
-          <div className="lg:w-1/3 lg:sticky lg:top-12 lg:h-[80vh]">
-            <div className="bg-red-600 text-white p-12 flex flex-col justify-between h-full rounded-3xl relative overflow-hidden shadow-lg">
-              {/* Abstract Blueprint Background Image */}
-              <div className="absolute inset-0 z-0 mix-blend-overlay opacity-40">
-                <Image
-                  src="https://images.unsplash.com/photo-1507208773393-40d9fc670acf?q=80&w=1000&auto=format&fit=crop"
-                  alt="Abstract blueprint architecture"
-                  fill
-                  className="object-cover grayscale"
-                />
-              </div>
+                {/* Content */}
+                <div className="p-8 md:p-10 relative z-10 max-w-lg">
+                  <h3 className="text-3xl font-bold text-zinc-900 mb-4 leading-tight group-hover:translate-x-1 transition-transform duration-300">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-zinc-500 text-sm md:text-base leading-relaxed mb-8 opacity-80 group-hover:opacity-100">
+                    {pillar.description}
+                  </p>
+                </div>
 
-              <div className="relative z-10">
-                <h2 className="text-5xl md:text-7xl font-black uppercase leading-none mb-6 drop-shadow-md">
-                  The <br /> Blueprint
-                </h2>
-                <p className="font-mono text-sm uppercase tracking-widest opacity-90 bg-black/20 inline-block px-4 py-2 rounded-full">
-                  Methodology
-                </p>
-              </div>
-              <div className="hidden lg:block relative z-10">
-                <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center backdrop-blur-md">
-                  <FaArrowRight className="w-6 h-6 rotate-90 md:rotate-0" />
+                {/* Image Reveal */}
+                <div className="relative w-full aspect-video overflow-hidden mt-auto border-t border-zinc-100">
+                  <Image
+                    src={pillar.image}
+                    alt={pillar.title}
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none mix-blend-overlay"></div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- 3. The Blueprint (Grid - 3 Cols) --- */}
+      <section className="relative w-full px-6 md:px-12 pb-24 bg-white">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-zinc-200 pb-8">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
+                The Blueprint
+              </h2>
+              <p className="text-zinc-500 font-medium">
+                Our proven methodology for market dominance.
+              </p>
             </div>
           </div>
 
-          {/* Scrollable Steps */}
-          <div className="lg:w-2/3 bg-white rounded-3xl shadow-sm overflow-hidden">
-            {steps.map((step, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-zinc-200 border border-zinc-200">
+            {steps.map((step, index) => (
               <div
-                key={i}
-                className="group flex flex-col md:flex-row border-b border-gray-100 last:border-b-0 min-h-[180px]"
+                key={index}
+                className="group bg-white p-8 md:p-10 hover:bg-zinc-50 transition-colors duration-500 min-h-[300px] flex flex-col"
               >
-                <div className="p-8 md:w-1/4 flex items-center bg-zinc-50 group-hover:bg-red-50 transition-colors">
-                  <span className="text-5xl font-black text-gray-300 group-hover:text-red-600 transition-colors">
-                    {step.number}
+                <div className="mb-auto">
+                  <span className="text-4xl font-black text-zinc-100 group-hover:text-red-600 transition-colors duration-300">
+                    0{index + 1}
                   </span>
                 </div>
-                <div className="p-8 md:w-3/4 flex flex-col justify-center group-hover:bg-zinc-50 transition-colors">
-                  <h3 className="text-2xl font-bold uppercase mb-3">
+
+                <div>
+                  <h3 className="text-xl font-bold text-zinc-900 mb-3 group-hover:translate-x-1 transition-transform duration-300">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 font-medium text-lg leading-relaxed">
+                  <p className="text-zinc-500 text-sm leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
@@ -288,76 +240,66 @@ export default function MarketingStrategyPage() {
         </div>
       </section>
 
-      {/* 4. 2025 Forecast with Header Visual */}
-      <section className="py-24 px-6 md:px-12 max-w-[1800px] mx-auto bg-white rounded-3xl shadow-sm my-12">
-        <div className="mb-16 flex flex-col md:flex-row items-center gap-8 pb-8 border-b border-gray-100">
-          <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-2xl overflow-hidden shrink-0 shadow-md">
-            <Image
-              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop"
-              alt="Future technology network globe"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight">
-              2025 <span className="text-red-600">Forecast</span>
+      {/* --- 4. 2025 Forecast (Clean Accordion) --- */}
+      <section className="w-full px-6 md:px-12 pb-24 bg-white">
+        <div className="max-w-screen-2xl mx-auto bg-zinc-50 rounded-3xl p-8 md:p-16">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold tracking-tight mb-4">
+              2025 Forecast
             </h2>
-            <p className="mt-4 text-xl text-gray-500 font-medium max-w-xl">
-              Emerging trends define the future landscape. Stay ahead of the
-              curve.
+            <p className="text-zinc-500">
+              Emerging trends that define the future landscape.
             </p>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-24 gap-y-0 px-4">
-          {trends.map((trend, i) => (
-            <div key={i} className="border-b border-gray-200">
-              <button
-                onClick={() => toggleTrend(i)}
-                className="w-full py-8 flex items-center justify-between text-left group"
-              >
-                <span
-                  className={`text-2xl md:text-3xl font-bold transition-colors duration-300 ${
-                    activeTrend === i
-                      ? "text-red-600"
-                      : "text-black group-hover:text-red-600"
-                  }`}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-4">
+            {trends.map((trend, i) => (
+              <div key={i} className="border-b border-zinc-200">
+                <button
+                  onClick={() => toggleTrend(i)}
+                  className="w-full py-6 flex items-center justify-between text-left group"
                 >
-                  {trend.title}
-                </span>
+                  <span
+                    className={`text-xl font-bold transition-colors duration-300 ${
+                      activeTrend === i
+                        ? "text-red-600"
+                        : "text-zinc-900 group-hover:text-red-600"
+                    }`}
+                  >
+                    {trend.title}
+                  </span>
+                  <div
+                    className={`transition-transform duration-300 p-2 rounded-full ${
+                      activeTrend === i
+                        ? "rotate-180 bg-red-100 text-red-600"
+                        : "bg-zinc-200 text-zinc-500 group-hover:bg-red-50 group-hover:text-red-600"
+                    }`}
+                  >
+                    {activeTrend === i ? (
+                      <FaMinus size={12} />
+                    ) : (
+                      <FaPlus size={12} />
+                    )}
+                  </div>
+                </button>
                 <div
-                  className={`transition-transform duration-300 bg-gray-100 rounded-full p-3 group-hover:bg-red-50 ${
-                    activeTrend === i ? "rotate-180 bg-red-100" : "rotate-0"
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    activeTrend === i
+                      ? "max-h-40 opacity-100 mb-6"
+                      : "max-h-0 opacity-0"
                   }`}
                 >
-                  {activeTrend === i ? (
-                    <FaMinus className="text-red-600" />
-                  ) : (
-                    <FaPlus className="text-gray-600 group-hover:text-red-600" />
-                  )}
+                  <p className="text-zinc-600 leading-relaxed font-medium">
+                    {trend.desc}
+                  </p>
                 </div>
-              </button>
-              <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  activeTrend === i
-                    ? "max-h-40 opacity-100 mb-10"
-                    : "max-h-0 opacity-0"
-                }`}
-              >
-                <p className="text-xl text-gray-600 leading-relaxed font-medium pl-2 border-l-4 border-red-600">
-                  {trend.desc}
-                </p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA Wrapper */}
-      <div className="rounded-t-3xl overflow-hidden">
-        <CTASection />
-      </div>
+      <CTASection />
     </main>
   );
 }

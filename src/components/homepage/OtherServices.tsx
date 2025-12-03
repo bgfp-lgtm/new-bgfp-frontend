@@ -177,24 +177,28 @@ export default function OtherServices({ data, readyData }: any) {
           <div className="absolute left-0 top-0 bottom-0 w-20 bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
 
+          {/* Define CSS Keyframes and Class locally */}
+          <style>{`
+            @keyframes marquee {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
+            }
+            .marquee-track {
+              animation: marquee 25s linear infinite;
+            }
+            /* Pause animation when the track is hovered */
+            .marquee-track:hover {
+              animation-play-state: paused;
+            }
+          `}</style>
+
           <div className="flex overflow-hidden px-4 md:px-10">
-            <motion.div
-              className="flex gap-0"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 25,
-                  ease: "linear",
-                },
-              }}
-              whileHover={{ animationPlayState: "paused" }}
-            >
+            {/* Switched from motion.div to standard div with CSS class */}
+            <div className="flex gap-0 marquee-track">
               {marqueeServices.map((service, index) => (
                 <ServiceCard key={`${service.id}-${index}`} service={service} />
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
 
@@ -211,7 +215,7 @@ export default function OtherServices({ data, readyData }: any) {
             <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-[100px] pointer-events-none" />
             <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none" />
 
-            {/* Background Decor: Grid Pattern (Subtle) */}
+            {/* Background Decor: Grid Pattern */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-soft-light pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col items-center justify-center text-center">
@@ -238,7 +242,7 @@ export default function OtherServices({ data, readyData }: any) {
 
                 {/* Secondary Button */}
                 <button
-                  onClick={() => setIsPopupOpen(true)} // Or link to contact page
+                  onClick={() => setIsPopupOpen(true)}
                   className="group inline-flex items-center justify-center bg-transparent border border-white/20 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-white/10 hover:border-white/40"
                 >
                   <BsTelephone className="w-5 h-5 mr-2 text-gray-400 group-hover:text-white transition-colors" />
@@ -246,7 +250,7 @@ export default function OtherServices({ data, readyData }: any) {
                 </button>
               </div>
 
-              {/* Trust Indicators (Optional small text below) */}
+              {/* Trust Indicators */}
               <div className="mt-8 flex items-center justify-center space-x-6 text-sm text-gray-500">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>

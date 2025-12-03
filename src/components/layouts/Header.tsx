@@ -50,9 +50,7 @@ export default function Header({ data }: HeaderProps) {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <header
-      className={`relative w-full ${isHomePage ? "bg-black" : "bg-white"}`}
-    >
+    <header className={`relative w-full bg-black`}>
       <div className="flex items-center justify-between px-4 sm:px-8 lg:px-20 py-5">
         <Link href="/" passHref>
           <Image
@@ -71,7 +69,7 @@ export default function Header({ data }: HeaderProps) {
               key={link.id}
               href={link.path}
               className={`text-sm transition-colors duration-300 hover:text-red-500 
-                ${isHomePage ? "text-white" : "text-gray-800"}
+                text-white
                 ${
                   isActiveLink(link.path)
                     ? "font-bold text-red-500"
