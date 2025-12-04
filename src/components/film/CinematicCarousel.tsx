@@ -22,7 +22,6 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
   const [openVideoUrl, setOpenVideoUrl] = useState<string | null>(null);
   const [openTitle, setOpenTitle] = useState<string | undefined>(undefined);
 
-  // 1. Configure Auto-play: 4000ms (4 seconds) delay
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: false }));
 
   useEffect(() => {
@@ -75,7 +74,8 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
           onMouseEnter={() => plugin.current.stop()}
           onMouseLeave={() => plugin.current.play()}
         >
-          <CarouselContent className="-ml-4 md:-ml-8">
+          {/* Zero Gap Layout */}
+          <CarouselContent className="ml-0">
             {projects.map((project, index) => {
               const isActive = index === current;
               const imageUrl = getStrapiMedia(project.image?.url);
@@ -83,17 +83,15 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
               return (
                 <CarouselItem
                   key={project.id}
-                  // UPDATED WIDTH: 85% width on mobile, 80% on desktop (Much wider)
-                  className="pl-4 md:pl-8 basis-[85%] md:basis-[80%] lg:basis-[85%] xl:basis-[80%] transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+                  // Full-bleed width effect (85% mobile, 80% desktop)
+                  className="pl-0 basis-[85%] md:basis-[80%] lg:basis-[85%] xl:basis-[80%] transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
                 >
                   <div
                     className={cn(
-                      // UPDATED HEIGHT: Fixed VH height instead of aspect-ratio
-                      // h-[60vh] on mobile, h-[80vh] on desktop for massive cinematic impact
                       "relative h-[60vh] md:h-[80vh] w-full rounded-3xl overflow-hidden transform transition-all duration-700 shadow-2xl",
                       isActive
-                        ? "scale-100 opacity-100 shadow-black/30"
-                        : "scale-[0.92] opacity-60 grayscale-[30%] blur-[1px]"
+                        ? "scale-100 opacity-100 shadow-black/30 z-10"
+                        : "scale-[0.92] opacity-60 grayscale-[30%] blur-[1px] z-0"
                     )}
                   >
                     {/* Background Image */}
@@ -112,55 +110,36 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
                       </div>
                     )}
 
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80" />
+                    {/* Gradient Overlay - Subtle bottom shade for text contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
 
-                    {/* Content Overlay */}
-                    <div className="absolute bottom-0 left-0 w-full p-8 md:p-20 flex flex-col items-start justify-end h-full pointer-events-none">
+                    {/* MINIMAL CONTENT OVERLAY */}
+                    <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 flex flex-col justify-end h-full pointer-events-none">
                       <div
                         className={cn(
-                          "transition-all duration-700 flex flex-col items-start gap-4 md:gap-8 max-w-5xl pointer-events-auto",
+                          "transition-all duration-700 flex flex-row items-center gap-6 pointer-events-auto",
                           isActive
                             ? "translate-y-0 opacity-100 delay-100"
-                            : "translate-y-12 opacity-0"
+                            : "translate-y-8 opacity-0"
                         )}
                       >
-                        <h3 className="text-4xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[0.9] drop-shadow-xl">
-                          {project.title}
-                        </h3>
-
-                        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm md:text-lg font-medium text-zinc-200/90">
-                          <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-white border border-white/10">
-                            Film Production
-                          </span>
-                          <span>•</span>
-                          <span>
-                            {new Date(
-                              project.updatedAt || Date.now()
-                            ).getFullYear()}
-                          </span>
-                          <span>•</span>
-                          <span>4K Ultra HD</span>
-                        </div>
-
-                        <p className="hidden md:block text-zinc-300 text-lg md:text-2xl leading-relaxed line-clamp-3 max-w-3xl font-light">
-                          {project.description ||
-                            "A cinematic masterpiece produced by BirthGiver Film Productions. Experience the story unfolding in vivid detail."}
-                        </p>
-
+                        {/* 1. Watch Now Button */}
                         {project.link && (
                           <button
                             onClick={(e) =>
                               handleStreamClick(e, project.link, project.title)
                             }
-                            className="group mt-4 bg-white text-black hover:bg-zinc-200 transition-all duration-300 px-10 py-5 rounded-full font-bold text-base md:text-xl inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:scale-105"
+                            className="group bg-white text-black hover:bg-zinc-200 transition-all duration-300 px-8 py-3.5 rounded-full font-bold text-sm md:text-base inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:scale-105"
                           >
-                            <span>Watch Trailer</span>
-                            <div className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                              <FaPlay className="w-3 h-3 ml-0.5" />
-                            </div>
+                            <FaPlay className="w-3 h-3" />
+                            <span>Watch Now</span>
                           </button>
                         )}
+
+                        {/* 2. Small Title Next to Button */}
+                        <h3 className="text-xl md:text-3xl font-bold text-white tracking-wide drop-shadow-md">
+                          {project.title}
+                        </h3>
                       </div>
                     </div>
                   </div>
