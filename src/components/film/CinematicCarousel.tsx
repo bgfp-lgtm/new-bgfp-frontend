@@ -22,6 +22,7 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
   const [openVideoUrl, setOpenVideoUrl] = useState<string | null>(null);
   const [openTitle, setOpenTitle] = useState<string | undefined>(undefined);
 
+  // 1. Configure Auto-play: 4000ms (4 seconds) delay
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: false }));
 
   useEffect(() => {
@@ -88,10 +89,10 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
                 >
                   <div
                     className={cn(
-                      "relative h-[60vh] md:h-[80vh] w-full rounded-3xl overflow-hidden transform transition-all duration-700 shadow-2xl",
+                      "relative h-[60vh] md:h-[80vh] w-full rounded-3xl overflow-hidden transform transition-all duration-700 shadow-2xl bg-black",
                       isActive
                         ? "scale-100 opacity-100 shadow-black/30 z-10"
-                        : "scale-[0.92] opacity-60 grayscale-[30%] blur-[1px] z-0"
+                        : "scale-[0.92] opacity-50 grayscale-[30%] blur-[1px] z-0" // UPDATED: opacity-50
                     )}
                   >
                     {/* Background Image */}
@@ -149,10 +150,6 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
           </CarouselContent>
 
           {/* Navigation Arrows */}
-          {/* <div className="hidden md:block">
-            <CarouselPrevious className="left-8 lg:left-16 h-16 w-16 bg-white/10 hover:bg-white border-none text-white hover:text-black backdrop-blur-md transition-all scale-110" />
-            <CarouselNext className="right-8 lg:right-16 h-16 w-16 bg-white/10 hover:bg-white border-none text-white hover:text-black backdrop-blur-md transition-all scale-110" />
-          </div> */}
         </Carousel>
 
         {/* Circle Sliders (Dots) */}
