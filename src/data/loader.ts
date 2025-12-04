@@ -234,7 +234,13 @@ const pageBySlugQuery = (slug: string) =>
               mission: true,
               vision: true,
               ourStory: true,
-              highlights: true,
+              highlights: {
+                populate: {
+                  image: {
+                    fields: ["url", "name"],
+                  },
+                },
+              },
               features: {
                 populate: {
                   cards: {

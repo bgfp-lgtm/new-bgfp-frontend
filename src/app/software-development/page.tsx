@@ -10,8 +10,8 @@ import {
 import { getStrapiMedia } from "@/lib/utils";
 import { FaArrowRight, FaCode } from "react-icons/fa";
 import LogoLoop from "@/components/homepage/LogoLoop";
-import ProjectPage from "@/components/projectpage/ProjectPage";
 import CTASectionTwo from "@/components/CTASectionTwo";
+import CinematicCarousel from "@/components/film/CinematicCarousel"; // Import the carousel
 
 export default async function SoftwareDevelopmentPage() {
   // 1. Fetch Global Data (for CTA)
@@ -63,7 +63,7 @@ export default async function SoftwareDevelopmentPage() {
 
   return (
     <main className="bg-white text-zinc-900 w-full min-h-screen selection:bg-red-600 selection:text-white">
-      {/* --- 1. Cinematic Hero Section (UNCHANGED) --- */}
+      {/* --- 1. Cinematic Hero Section --- */}
       <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden">
         {/* Background Video */}
         <div className="absolute inset-0 w-full h-full z-0">
@@ -106,7 +106,7 @@ export default async function SoftwareDevelopmentPage() {
         </div>
       </section>
 
-      {/* --- 2. Engineering Services (UPDATED LAYOUT) --- */}
+      {/* --- 2. Engineering Services --- */}
       <section className="relative w-full py-24 bg-white">
         <div className="max-w-screen-2xl mx-auto">
           {/* Section Header */}
@@ -202,14 +202,8 @@ export default async function SoftwareDevelopmentPage() {
         </section>
       )}
 
-      {/* --- 4. Our Latest Projects --- */}
-      <ProjectPage
-        projects={projects}
-        showHero={false}
-        showCta={false}
-        heading="Our Latest Projects"
-        limit={2}
-      />
+      {/* --- 4. Our Latest Projects (REPLACED WITH CAROUSEL) --- */}
+      <CinematicCarousel projects={projects} />
 
       <CTASectionTwo />
     </main>

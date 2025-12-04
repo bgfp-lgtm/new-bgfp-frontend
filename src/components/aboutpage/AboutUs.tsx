@@ -275,75 +275,86 @@ export default function AboutUs({
           </div>
         </section>
 
-        {/* --- MEMBERS SECTION --- */}
-        <div className="w-full flex flex-col gap-24 md:gap-32">
-          {members?.map((member: any, index: number) => (
-            <motion.div
-              key={member.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8 }}
-              className={`flex flex-col ${
-                index % 2 === 0 ? "lg:flex-row " : "lg:flex-row-reverse"
-              } items-center  gap-10 md:gap-16`}
-            >
-              {/* Image Container */}
+        {/* --- MEMBERS SECTION (UPDATED: Clean, No Gray Backdrop) --- */}
+        <section className="w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-24 border-b border-zinc-200 pb-10"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-zinc-900">
+              The Minds Behind the Magic.
+            </h2>
+          </motion.div>
+
+          <div className="flex flex-col gap-32">
+            {members?.map((member: any, index: number) => (
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="w-full lg:w-1/2 flex justify-center lg:shrink-0"
+                key={member.id}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+                className={`flex flex-col ${
+                  index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+                } items-center gap-12 lg:gap-24`}
               >
-                <div className="relative w-full h-[450px] lg:w-[450px] lg:h-[650px] overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 mx-auto">
-                  <SafeImage
-                    url={member.image?.url}
-                    alt={`${member.name} - ${member.title}`}
-                    width={600}
-                    height={800}
-                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </motion.div>
-
-              {/* Text Container */}
-              <div className="w-full lg:w-1/2 flex flex-col gap-6 py-4 justify-center items-center lg:items-start text-center lg:text-left">
-                <div>
-                  <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">
-                    {member.title}
-                  </h2>
-                  <h3 className="text-xl md:text-2xl font-medium text-red-500">
-                    {member.name}
-                  </h3>
-                </div>
-
-                <p className="text-gray-600 leading-relaxed text-base md:text-lg max-w-xl">
-                  {member.description}
-                </p>
-
-                {member.skills && (
-                  <div className="mt-2 w-full">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-3">
-                      Key Skills & Expertise:
-                    </h4>
-                    {/* Skills Container */}
-                    <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-                      {member.skills.map((skill: any) => (
-                        <span
-                          key={skill.id}
-                          className="px-3 py-1 bg-red-50 text-red-600 border border-red-100 rounded-full text-sm font-medium"
-                        >
-                          {skill.name}
-                        </span>
-                      ))}
+                {/* Image Side - CLEAN, NO BACKDROP */}
+                <div className="w-full lg:w-1/2">
+                  <div className="relative group">
+                    <div className="relative w-full aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
+                      <SafeImage
+                        url={member.image?.url}
+                        alt={`${member.name}`}
+                        width={800}
+                        height={1000}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      {/* Gradient Overlay for Texture */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
                   </div>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                </div>
+
+                {/* Content Side */}
+                <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+                  {/* Title is now the label */}
+                  <span className="text-red-600 font-bold tracking-widest uppercase text-sm mb-4">
+                    {member.title}
+                  </span>
+
+                  {/* Name is now the main heading */}
+                  <h3 className="text-4xl md:text-6xl font-black text-zinc-900 mb-8 leading-tight">
+                    {member.name}
+                  </h3>
+
+                  <p className="text-zinc-500 text-lg md:text-xl leading-relaxed mb-10 max-w-lg">
+                    {member.description}
+                  </p>
+
+                  {member.skills && (
+                    <div className="w-full">
+                      <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6">
+                        Expertise
+                      </h4>
+                      <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                        {member.skills.map((skill: any) => (
+                          <span
+                            key={skill.id}
+                            className="px-5 py-2 bg-white border border-zinc-200 text-zinc-700 rounded-full text-sm font-medium hover:border-red-500 hover:text-red-600 transition-colors duration-300 shadow-sm"
+                          >
+                            {skill.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
       </motion.div>
       <CTASection data={cta} />
     </div>

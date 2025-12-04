@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import CTASection from "@/components/CTASection";
 import {
   getPageBySlug,
   getGlobalData,
@@ -10,11 +9,11 @@ import {
 import { getStrapiMedia } from "@/lib/utils";
 import { FaArrowRight, FaFilm } from "react-icons/fa";
 import LogoLoop from "@/components/homepage/LogoLoop";
-import ProjectPage from "@/components/projectpage/ProjectPage";
 import CTASectionTwo from "@/components/CTASectionTwo";
+import CinematicCarousel from "@/components/film/CinematicCarousel"; // Import the new component
 
 export default async function FilmProductionPage() {
-  // 1. Fetch Global Data (for CTA)
+  // 1. Fetch Global Data
   const globalResponse = await getGlobalData();
   const cta = globalResponse?.data?.cta?.[0];
 
@@ -41,7 +40,7 @@ export default async function FilmProductionPage() {
   );
   const subServices = filmServiceData?.subServices || [];
 
-  // 4. Fetch Homepage Data for Brands (Collaborations)
+  // 4. Fetch Homepage Data for Brands
   const homepageResponse = await getHomepageQuery();
   const collaborations = homepageResponse?.data?.blocks?.find(
     (block: any) => block.__component === "homepage.collaborations"
@@ -54,7 +53,7 @@ export default async function FilmProductionPage() {
       title: brand.name,
     })) || [];
 
-  // 5. Fetch Projects Data
+  // 5. Fetch Projects Data for the Carousel
   const { data: projects } = await getProject();
 
   // Fallback values
@@ -68,11 +67,8 @@ export default async function FilmProductionPage() {
 
   return (
     <main className="bg-white text-zinc-900 w-full min-h-screen selection:bg-red-600 selection:text-white">
-      {/* =========================================
-          1. CINEMATIC HERO SECTION (UNCHANGED)
-      ========================================= */}
+      {/* 1. HERO SECTION */}
       <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden">
-        {/* Background Video */}
         <div className="absolute inset-0 w-full h-full z-0">
           <video
             autoPlay
@@ -83,11 +79,9 @@ export default async function FilmProductionPage() {
           >
             <source src={heroVideo || ""} type="video/mp4" />
           </video>
-          {/* Gradient for text readability */}
           <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
         </div>
 
-        {/* Hero Content */}
         <div className="relative z-10 w-full max-w-screen-2xl mx-auto border-t border-white/20 pt-8">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
@@ -113,13 +107,10 @@ export default async function FilmProductionPage() {
         </div>
       </section>
 
-      {/* =========================================
-          2. PRODUCTION SERVICES (UPDATED LAYOUT)
-      ========================================= */}
-      <section className="relative w-full  py-32 bg-white">
+      {/* 2. SERVICES SECTION */}
+      <section className="relative w-full py-32 bg-white">
         <div className="max-w-screen-2xl mx-auto">
-          {/* Section Header */}
-          <div className="flex flex-col  px-6 md:px-12 lg:flex-row justify-between items-end mb-20 border-b border-zinc-200 pb-10">
+          <div className="flex flex-col px-6 md:px-12 lg:flex-row justify-between items-end mb-20 border-b border-zinc-200 pb-10">
             <div className="max-w-5xl">
               <span className="text-red-600 font-mono text-xs font-bold uppercase tracking-widest mb-4 block">
                 What We Do
@@ -133,29 +124,22 @@ export default async function FilmProductionPage() {
                 feature films.
               </p>
             </div>
-
-            {/* Decorative Icon */}
             <div className="hidden lg:block pb-2">
               <FaFilm className="text-zinc-200 text-6xl" />
             </div>
           </div>
 
-          {/* The Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-gray-100 p-5 w-full items-stretch">
             {subServices.map((service: any, index: number) => {
               const imageUrl = getStrapiMedia(service.image?.url);
-
               return (
                 <div
                   key={service.id || index}
-                  className="group relative  bg-white h-full flex flex-col p-8 md:p-10 transition-all duration-500 hover:z-10"
+                  className="group relative bg-white h-full flex flex-col p-8 md:p-10 transition-all duration-500 hover:z-10"
                 >
-                  {/* 1. TITLE */}
                   <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-6 tracking-tight">
                     {service.title}
                   </h3>
-
-                  {/* 2. IMAGE */}
                   <div className="relative w-full mb-8 overflow-hidden bg-zinc-50 rounded-lg aspect-video">
                     {imageUrl ? (
                       <Image
@@ -171,13 +155,9 @@ export default async function FilmProductionPage() {
                       </div>
                     )}
                   </div>
-
-                  {/* 3. DESCRIPTION */}
                   <p className="text-zinc-500 text-base leading-relaxed mb-8 flex-grow">
                     {service.description}
                   </p>
-
-                  {/* 4. BUTTON (Full width, rounded-2xl) */}
                   <div className="mt-auto w-full">
                     <Link
                       href="/contact"
@@ -194,9 +174,10 @@ export default async function FilmProductionPage() {
         </div>
       </section>
 
-      {/* =========================================
-          3. OUR BRANDS
-      ========================================= */}
+      {/* 3. NEW CINEMATIC CAROUSEL */}
+      <CinematicCarousel projects={projects} />
+
+      {/* 4. BRANDS LOOP */}
       {logos.length > 0 && (
         <section className="w-full py-24">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
@@ -216,19 +197,6 @@ export default async function FilmProductionPage() {
           </div>
         </section>
       )}
-
-      {/* =========================================
-          4. LATEST PROJECTS
-      ========================================= */}
-      <div className="pt-20">
-        <ProjectPage
-          projects={projects}
-          showHero={false}
-          showCta={false}
-          heading="Featured Works"
-          limit={2}
-        />
-      </div>
 
       <CTASectionTwo />
     </main>
