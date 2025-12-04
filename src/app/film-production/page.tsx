@@ -141,7 +141,7 @@ export default async function FilmProductionPage() {
           </div>
 
           {/* The Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-100 p-8 border border-zinc-200 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-gray-100 p-5 w-full items-stretch">
             {subServices.map((service: any, index: number) => {
               const imageUrl = getStrapiMedia(service.image?.url);
 

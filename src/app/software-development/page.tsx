@@ -128,7 +128,7 @@ export default async function SoftwareDevelopmentPage() {
           </div>
 
           {/* The Grid: 2 Columns with Gap */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-100 p-8 w-full items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-gray-100 p-5 w-full items-stretch">
             {subServices.map((service: any, index: number) => {
               const imageUrl = getStrapiMedia(service.image?.url);
 
