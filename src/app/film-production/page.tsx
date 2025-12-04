@@ -8,20 +8,25 @@ import {
   getProject,
 } from "@/data/loader";
 import { getStrapiMedia } from "@/lib/utils";
-import { FaArrowRight, FaChartLine } from "react-icons/fa";
+import { FaArrowRight, FaFilm } from "react-icons/fa";
 import LogoLoop from "@/components/homepage/LogoLoop";
 import ProjectPage from "@/components/projectpage/ProjectPage";
 
-export default async function MarketingStrategyPage() {
+export default async function FilmProductionPage() {
   // 1. Fetch Global Data (for CTA)
   const globalResponse = await getGlobalData();
   const cta = globalResponse?.data?.cta?.[0];
 
   // 2. Fetch Data for Hero
-  const pageResponse = await getPageBySlug("marketing-strategy");
-  const pageBlock = pageResponse?.data?.[0]?.blocks?.find(
-    (block: any) => block.__component === "blocks.marketing"
-  );
+  const pageResponse = await getPageBySlug("film-production");
+  const pageBlock =
+    pageResponse?.data?.[0]?.blocks?.find(
+      (block: any) => block.__component === "blocks.film"
+    ) ||
+    pageResponse?.data?.[0]?.blocks?.find(
+      (block: any) => block.__component === "blocks.marketing"
+    );
+
   const herosection = pageBlock?.herosection;
 
   // 3. Fetch Data for Services Grid
@@ -30,10 +35,10 @@ export default async function MarketingStrategyPage() {
     (block: any) => block.__component === "blocks.service"
   );
 
-  const marketingServiceData = serviceBlock?.services?.find(
-    (service: any) => service.href === "/marketing-strategy"
+  const filmServiceData = serviceBlock?.services?.find(
+    (service: any) => service.href === "/film-production"
   );
-  const subServices = marketingServiceData?.subServices || [];
+  const subServices = filmServiceData?.subServices || [];
 
   // 4. Fetch Homepage Data for Brands (Collaborations)
   const homepageResponse = await getHomepageQuery();
@@ -52,17 +57,19 @@ export default async function MarketingStrategyPage() {
   const { data: projects } = await getProject();
 
   // Fallback values
-  const heroTitle = herosection?.title || "Marketing & Strategy";
+  const heroTitle = herosection?.title || "Film Production";
   const heroDesc =
     herosection?.description ||
-    "Comprehensive solutions to maximize reach. We don't just guess; we engineer impact through data and creativity.";
+    "Bringing stories to life with cinematic excellence. We manage every frame from concept to final cut.";
   const heroVideo = herosection?.video?.url
     ? getStrapiMedia(herosection.video.url)
-    : "/marketing.mp4";
+    : "/film.mp4";
 
   return (
     <main className="bg-white text-zinc-900 w-full min-h-screen selection:bg-red-600 selection:text-white">
-      {/* --- 1. Cinematic Hero Section --- */}
+      {/* =========================================
+          1. CINEMATIC HERO SECTION
+      ========================================= */}
       <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden">
         {/* Background Video */}
         <div className="absolute inset-0 w-full h-full z-0">
@@ -76,7 +83,7 @@ export default async function MarketingStrategyPage() {
             <source src={heroVideo || ""} type="video/mp4" />
           </video>
           {/* Gradient for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
         </div>
 
         {/* Hero Content */}
@@ -84,7 +91,7 @@ export default async function MarketingStrategyPage() {
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
             <span className="text-xs font-mono uppercase tracking-widest text-white/80">
-              Global Strategy
+              Production House
             </span>
           </div>
 
@@ -98,81 +105,91 @@ export default async function MarketingStrategyPage() {
             </p>
 
             <div className="flex items-center gap-4 text-white/60 text-xs font-mono uppercase tracking-widest">
-              <span>Scroll to Analyze</span>
+              <span>Scroll to View</span>
               <div className="h-px w-12 bg-white/40"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* --- 2. Strategic Services (Architectural Grid) --- */}
-      <section className="relative w-full px-6 md:px-12 py-24 bg-white">
+      {/* =========================================
+          2. PRODUCTION SERVICES (FIXED LAYOUT)
+      ========================================= */}
+      <section className="relative w-full px-6 md:px-12 py-32 bg-white">
         <div className="max-w-screen-2xl mx-auto">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-zinc-200 pb-8">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-                {marketingServiceData?.title || "Strategic Channels"}
+          <div className="flex flex-col lg:flex-row justify-between items-end mb-20 border-b border-zinc-200 pb-10">
+            <div className="max-w-5xl">
+              <span className="text-red-600 font-mono text-xs font-bold uppercase tracking-widest mb-4 block">
+                What We Do
+              </span>
+              <h2 className="text-5xl md:text-5xl w-full font-bold tracking-tighter text-zinc-900 mb-6">
+                {filmServiceData?.title || "Production Services"}
               </h2>
-              <p className="text-zinc-500 font-medium">
-                Bridging the gap between creative vision and market impact.
+              <p className="text-zinc-500 text-lg md:text-xl leading-relaxed">
+                From pre-production logistics to post-production polish, we
+                provide end-to-end solutions for commercials, documentaries, and
+                feature films.
               </p>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-zinc-100 rounded-full">
-              <FaChartLine className="text-zinc-400" />
-              <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">
-                Growth Engine
-              </span>
+
+            {/* Decorative Icon */}
+            <div className="hidden lg:block pb-2">
+              <FaFilm className="text-zinc-200 text-6xl" />
             </div>
           </div>
 
-          {/* The Grid: 2 Columns for Cinematic Width */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200 border border-zinc-200">
+          {/* The Grid */}
+          {/* FIX: Used 'items-start' to allow cards to be natural height, preventing awkward stretching/whitespace */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200 border border-zinc-200 shadow-sm items-start">
             {subServices.map((service: any, index: number) => {
               const imageUrl = getStrapiMedia(service.image?.url);
 
               return (
                 <div
                   key={service.id || index}
-                  className="group relative bg-white h-full min-h-[500px] flex flex-col justify-between overflow-hidden hover:bg-zinc-50 transition-colors duration-500"
+                  className="group relative bg-white h-full flex flex-col overflow-hidden hover:z-10 transition-all duration-500"
                 >
-                  {/* Header: Number & Icon */}
-                  <div className="p-8 md:p-10 pb-0 flex justify-between items-start">
-                    <span className="text-xs font-mono text-zinc-300">
-                      0{index + 1}
-                    </span>
-                    <div className="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-colors duration-300">
-                      <FaArrowRight className="w-3 h-3 text-zinc-300 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-300" />
+                  {/* Text Content */}
+                  {/* FIX: Added min-h-[320px] to force text sections to be roughly equal, aligning the image tops */}
+                  <div className="p-8 md:p-10 relative z-20 flex flex-col items-start bg-white min-h-[320px]">
+                    <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-4 tracking-tight">
+                      {service.title}
+                    </h3>
+
+                    <p className="text-zinc-500 text-base leading-relaxed mb-8 max-w-md">
+                      {service.description}
+                    </p>
+
+                    <div className="mt-auto">
+                      <Link
+                        href="/contact"
+                        className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-zinc-200 rounded-full text-xs font-bold uppercase tracking-widest text-zinc-900 transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-lg"
+                      >
+                        <span>Start Project</span>
+                        <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                      </Link>
                     </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="p-8 md:p-10 relative z-10 max-w-lg">
-                    <h3 className="text-3xl font-bold text-zinc-900 mb-4 leading-tight group-hover:translate-x-1 transition-transform duration-300">
-                      {service.title}
-                    </h3>
-                    <p className="text-zinc-500 text-sm md:text-base leading-relaxed mb-8 opacity-80 group-hover:opacity-100">
-                      {service.description}
-                    </p>
-                  </div>
-
-                  {/* Cinematic Image Reveal (Bottom) */}
-                  <div className="relative w-full aspect-video overflow-hidden mt-auto border-t border-zinc-100">
+                  {/* Image Area - FULL WIDTH & NATURAL HEIGHT */}
+                  <div className="relative w-full border-t border-zinc-100">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
                         alt={service.title}
-                        fill
-                        className="object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-700 ease-out"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        // FIX: w-full h-auto ensures NO CROP and FULL WIDTH.
+                        className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
                       />
                     ) : (
-                      <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-zinc-300 text-sm font-mono">
-                        [Image Not Available]
+                      <div className="w-full h-64 bg-zinc-50 flex items-center justify-center text-zinc-300 text-sm font-mono">
+                        IMAGE NOT FOUND
                       </div>
                     )}
-                    {/* Subtle noise overlay */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none mix-blend-overlay transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                   </div>
                 </div>
               );
@@ -181,12 +198,14 @@ export default async function MarketingStrategyPage() {
         </div>
       </section>
 
-      {/* --- 3. Our Brands (Collaborative Partners) --- */}
+      {/* =========================================
+          3. OUR BRANDS
+      ========================================= */}
       {logos.length > 0 && (
         <section className="w-full py-24">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
             <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-12">
-              Technology Partners
+              Our Brand Partners
             </h3>
             <div className="relative h-20 w-full overflow-hidden transition-all duration-500">
               <LogoLoop
@@ -202,14 +221,18 @@ export default async function MarketingStrategyPage() {
         </section>
       )}
 
-      {/* --- 4. Our Latest Projects (Added Section) --- */}
-      <ProjectPage
-        projects={projects}
-        showHero={false}
-        showCta={false}
-        heading="Our Latest Projects"
-        limit={2}
-      />
+      {/* =========================================
+          4. LATEST PROJECTS
+      ========================================= */}
+      <div className="pt-20">
+        <ProjectPage
+          projects={projects}
+          showHero={false}
+          showCta={false}
+          heading="Featured Works"
+          limit={2}
+        />
+      </div>
 
       <CTASection data={cta} />
     </main>

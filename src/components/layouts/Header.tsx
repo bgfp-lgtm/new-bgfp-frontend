@@ -21,6 +21,7 @@ export default function Header({ data }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
   const [expandedLink, setExpandedLink] = useState<number | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false); // New state for scroll detection
 
   const pathname = usePathname();
   const logoUrl = getStrapiMedia(data?.logo?.url) || "/logo.png";
@@ -42,6 +43,21 @@ export default function Header({ data }: HeaderProps) {
     { id: 5, name: "Careers", path: "/careers" },
     { id: 6, name: "Blog Posts", path: "/blog" },
   ];
+
+  // Handle Scroll Detection
+  useEffect(() => {
+    const handleScroll = () => {
+      // If user scrolls down more than 50px, toggle state
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
@@ -66,9 +82,20 @@ export default function Header({ data }: HeaderProps) {
     setExpandedLink(null);
   };
 
+  // Dynamic Background Logic
+  // 1. If Menu is Open -> Keep Solid Black (so white text is visible over white menu)
+  // 2. If Scrolled -> Transparent Black + Blur
+  // 3. Default -> Solid Black
+  const headerBackgroundClass = isMenuOpen
+    ? "bg-black"
+    : isScrolled
+    ? "bg-black/80 backdrop-blur-md shadow-sm" // Reduced opacity + blur
+    : "bg-black";
+
   return (
-    // CHANGED: 'relative' -> 'sticky top-0' to make it stick to the viewport top
-    <header className="sticky top-0 w-full bg-black z-50 transition-all duration-300">
+    <header
+      className={`sticky top-0 w-full z-50 transition-all duration-500 ${headerBackgroundClass}`}
+    >
       <div className="flex items-center justify-between px-4 sm:px-8 lg:px-20 py-5">
         <Link href="/" passHref onClick={closeMenu}>
           <Image

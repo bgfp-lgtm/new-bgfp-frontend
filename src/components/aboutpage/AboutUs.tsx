@@ -55,52 +55,73 @@ export default function AboutUs({
   const featureCards = features?.cards || [];
 
   return (
-    <div className="bg-white">
-      {/* --- HERO SECTION --- */}
-      <div className="relative h-screen w-full overflow-hidden">
-        {herosectionData?.video?.url && (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source
-              src={getStrapiMedia(herosectionData.video.url) || ""}
-              type="video/mp4"
-            />
-          </video>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/60"></div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white px-6 max-w-5xl">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+    <div className="bg-white min-h-screen flex flex-col">
+      {/* =========================================
+          1. CINEMATIC HERO SECTION (UPDATED)
+      ========================================= */}
+      <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden bg-black">
+        {/* Background Video */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          {herosectionData?.video?.url && (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover opacity-90"
             >
-              {herosectionData?.title}
-            </motion.h1>
+              <source
+                src={getStrapiMedia(herosectionData.video.url) || ""}
+                type="video/mp4"
+              />
+            </video>
+          )}
+          {/* Gradient for text readability */}
+          <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 w-full max-w-screen-2xl mx-auto border-t border-white/20 pt-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
+            <span className="text-xs font-mono uppercase tracking-widest text-white/80">
+              Who We Are
+            </span>
+          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-8 text-white max-w-6xl"
+          >
+            {herosectionData?.title}
+          </motion.h1>
+
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-lg md:text-xl text-gray-100 max-w-3xl mx-auto leading-relaxed"
+              className="text-gray-200 text-lg md:text-xl max-w-2xl leading-relaxed"
             >
               {herosectionData?.description}
             </motion.p>
+
+            <div className="flex items-center gap-4 text-white/60 text-xs font-mono uppercase tracking-widest">
+              <span>Scroll to Explore</span>
+              <div className="h-px w-12 bg-white/40"></div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* --- MAIN CONTENT --- */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="px-6 py-16 md:px-12 md:py-24 max-w-[1400px] mx-auto overflow-hidden"
+        className="relative px-6 py-16 md:px-12 md:py-24 max-w-[1400px] mx-auto w-full"
       >
         {/* --- WHAT IS BGFP SECTION --- */}
         <section className="mb-24 md:mb-32">
@@ -116,7 +137,7 @@ export default function AboutUs({
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16 items-stretch">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -163,7 +184,7 @@ export default function AboutUs({
           </div>
 
           {/* Highlights Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
             {highlights?.map((highlight: any, index: number) => (
               <motion.div
                 key={highlight.id || index}
@@ -185,7 +206,7 @@ export default function AboutUs({
                 <h5 className="text-xl font-bold text-gray-900 mb-3">
                   {highlight.title}
                 </h5>
-                <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                <p className="text-gray-600 leading-relaxed text-sm md:text-base flex-grow">
                   {highlight.description}
                 </p>
               </motion.div>
@@ -193,7 +214,7 @@ export default function AboutUs({
           </div>
         </section>
 
-        {/* --- WHY CHOOSE US SECTION (FIXED: Automatic Full Width for Last Odd Card) --- */}
+        {/* --- WHY CHOOSE US SECTION --- */}
         <section className="mb-24 md:mb-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -212,9 +233,8 @@ export default function AboutUs({
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 auto-rows-fr">
             {featureCards.map((feature: any, index: number) => {
-              // 2. Logic: Is this the last item? Is the total count odd?
               const isLastItem = index === featureCards.length - 1;
               const isOddTotal = featureCards.length % 2 !== 0;
               const shouldSpan = feature.span || (isLastItem && isOddTotal);
@@ -226,15 +246,14 @@ export default function AboutUs({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: feature.delay || 0 }}
-                  // 3. Apply col-span-2 if condition is met
-                  className={`group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-200 p-8 hover:border-red-200 hover:shadow-lg transition-all duration-300 ${
+                  className={`group relative bg-linear-to-br from-white to-gray-50 rounded-2xl border border-gray-200 p-8 hover:border-red-200 hover:shadow-lg transition-all duration-300 h-full ${
                     shouldSpan ? "md:col-span-2" : ""
                   }`}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-br from-red-50 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300 pointer-events-none" />
 
-                  <div className="relative z-10">
-                    <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500 group-hover:scale-110 transition-all duration-300">
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500 group-hover:scale-110 transition-all duration-300 shrink-0">
                       <SafeImage
                         url={feature.image?.url}
                         alt={feature.title || "feature"}
@@ -246,7 +265,7 @@ export default function AboutUs({
                     <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors duration-300">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="text-gray-700 leading-relaxed flex-grow">
                       {feature.description}
                     </p>
                   </div>
@@ -263,12 +282,13 @@ export default function AboutUs({
               key={member.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8 }}
               className={`flex flex-col ${
-                index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-              } items-center gap-10 md:gap-16`}
+                index % 2 === 0 ? "lg:flex-row " : "lg:flex-row-reverse"
+              } items-center  gap-10 md:gap-16`}
             >
+              {/* Image Container */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -287,7 +307,8 @@ export default function AboutUs({
                 </div>
               </motion.div>
 
-              <div className="w-full lg:w-1/2 flex flex-col gap-6 py-4">
+              {/* Text Container */}
+              <div className="w-full lg:w-1/2 flex flex-col gap-6 py-4 justify-center items-center lg:items-start text-center lg:text-left">
                 <div>
                   <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">
                     {member.title}
@@ -297,16 +318,17 @@ export default function AboutUs({
                   </h3>
                 </div>
 
-                <p className="text-gray-600 leading-relaxed text-base md:text-lg">
+                <p className="text-gray-600 leading-relaxed text-base md:text-lg max-w-xl">
                   {member.description}
                 </p>
 
                 {member.skills && (
-                  <div className="mt-2">
+                  <div className="mt-2 w-full">
                     <h4 className="text-lg font-semibold text-gray-900 mb-3">
                       Key Skills & Expertise:
                     </h4>
-                    <div className="flex flex-wrap gap-2">
+                    {/* Skills Container */}
+                    <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                       {member.skills.map((skill: any) => (
                         <span
                           key={skill.id}
@@ -322,38 +344,8 @@ export default function AboutUs({
             </motion.div>
           ))}
         </div>
-
-        {/* --- CTA SECTION --- */}
-        <div className="mt-32">
-          <CTASection data={cta} />
-        </div>
-
-        {/* --- FOOTER --- */}
-        <motion.footer
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mt-24 p-8 bg-gray-50 rounded-2xl border border-gray-100"
-        >
-          <h3 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-            Ready to Collaborate?
-          </h3>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-            BGFP is always open to exploring new opportunities and partnerships.
-            Let's create something extraordinary together.
-          </p>
-
-          {/* CTA Button Added Here */}
-          <Link
-            href="/contact"
-            className="group relative inline-flex items-center justify-center bg-red-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-red-700 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:-translate-y-1"
-          >
-            <span className="mr-2">Contact Us</span>
-            <FaArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </motion.footer>
       </motion.div>
+      <CTASection data={cta} />
     </div>
   );
 }

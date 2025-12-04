@@ -76,7 +76,7 @@ export default async function SoftwareDevelopmentPage() {
             <source src={heroVideo || ""} type="video/mp4" />
           </video>
           {/* Gradient for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
         </div>
 
         {/* Hero Content */}
@@ -126,44 +126,59 @@ export default async function SoftwareDevelopmentPage() {
             </div>
           </div>
 
-          {/* The Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200 border border-zinc-200">
+          {/* The Grid: 2 Columns for Cinematic Width */}
+          {/* UPDATED: items-start to prevent stretching */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200 border border-zinc-200 shadow-sm items-start">
             {subServices.map((service: any, index: number) => {
               const imageUrl = getStrapiMedia(service.image?.url);
 
               return (
                 <div
                   key={service.id || index}
-                  className="group relative bg-white h-full min-h-[500px] flex flex-col justify-between overflow-hidden hover:bg-zinc-50 transition-colors duration-500"
+                  // UPDATED: h-full flex column
+                  className="group relative bg-white h-full flex flex-col justify-between overflow-hidden hover:bg-zinc-50 transition-colors duration-500"
                 >
-                  {/* Header: Number & Icon */}
-                  <div className="p-8 md:p-10 pb-0 flex justify-between items-start">
-                    <span className="text-xs font-mono text-zinc-300">
-                      0{index + 1}
-                    </span>
-                    <div className="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-colors duration-300">
-                      <FaArrowRight className="w-3 h-3 text-zinc-300 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-300" />
+                  {/* Text Wrapper - UPDATED: min-h-[320px] for alignment */}
+                  <div className="p-8 md:p-10 relative z-20 flex flex-col bg-white min-h-[320px]">
+                    {/* Header: Number & Icon */}
+                    <div className="flex justify-between items-start mb-6">
+                      <span className="text-xs font-mono text-zinc-300">
+                        0{index + 1}
+                      </span>
+                      <div className="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-colors duration-300">
+                        <FaArrowRight className="w-3 h-3 text-zinc-300 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-300" />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Content */}
-                  <div className="p-8 md:p-10 relative z-10 max-w-lg">
+                    {/* Content */}
                     <h3 className="text-3xl font-bold text-zinc-900 mb-4 leading-tight group-hover:translate-x-1 transition-transform duration-300">
                       {service.title}
                     </h3>
                     <p className="text-zinc-500 text-sm md:text-base leading-relaxed mb-8 opacity-80 group-hover:opacity-100">
                       {service.description}
                     </p>
+
+                    {/* Start Project Button - ADDED */}
+                    <div className="mt-auto">
+                      <Link
+                        href="/contact"
+                        className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-zinc-200 rounded-full text-xs font-bold uppercase tracking-widest text-zinc-900 transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-lg"
+                      >
+                        <span>Start Project</span>
+                        <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                      </Link>
+                    </div>
                   </div>
 
                   {/* Cinematic Image Reveal (Bottom) */}
-                  <div className="relative w-full aspect-video overflow-hidden mt-auto border-t border-zinc-100">
+                  {/* UPDATED: Fixed height h-64 to match marketing page */}
+                  <div className="relative w-full h-64 border-t border-zinc-100">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
                         alt={service.title}
                         fill
-                        className="object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     ) : (
@@ -171,6 +186,7 @@ export default async function SoftwareDevelopmentPage() {
                         [Image Not Available]
                       </div>
                     )}
+                    {/* Subtle noise overlay */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none mix-blend-overlay transition-opacity duration-500"></div>
                   </div>
                 </div>
@@ -185,7 +201,7 @@ export default async function SoftwareDevelopmentPage() {
         <section className="w-full py-24">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
             <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-12">
-              Technology Partners
+              Our Brand Partners
             </h3>
             <div className="relative h-20 w-full overflow-hidden transition-all duration-500">
               <LogoLoop

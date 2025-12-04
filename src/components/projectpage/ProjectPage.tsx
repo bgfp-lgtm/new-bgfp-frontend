@@ -25,43 +25,65 @@ export default function ProjectPage({
 
   return (
     <div>
-      {/* Hero Section with Video - Conditionally Rendered */}
+      {/* =========================================
+          1. CINEMATIC HERO SECTION (UPDATED)
+      ========================================= */}
       {showHero && (
-        <div className="relative h-screen overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src="/about.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/40"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white px-4">
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="text-4xl md:text-6xl font-bold mb-4"
-              >
-                Our Projects
-              </motion.h1>
+        <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden bg-black">
+          {/* Background Video */}
+          <div className="absolute inset-0 w-full h-full z-0">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover opacity-90"
+            >
+              <source src="/about.mp4" type="video/mp4" />
+            </video>
+            {/* Gradient for text readability */}
+            <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
+          </div>
+
+          {/* Hero Content */}
+          <div className="relative z-10 w-full max-w-screen-2xl mx-auto border-t border-white/20 pt-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
+              <span className="text-xs font-mono uppercase tracking-widest text-white/80">
+                Our Portfolio
+              </span>
+            </div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-8 text-white max-w-6xl"
+            >
+              Our Projects
+            </motion.h1>
+
+            <div className="flex flex-col md:flex-row justify-between items-end gap-8">
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-lg md:text-xl max-w-3xl mx-auto"
+                className="text-gray-200 text-lg md:text-xl max-w-2xl leading-relaxed"
               >
                 Discover our portfolio of creative projects and see the impact
-                of our work
+                of our work.
               </motion.p>
+
+              <div className="flex items-center gap-4 text-white/60 text-xs font-mono uppercase tracking-widest">
+                <span>Scroll to View</span>
+                <div className="h-px w-12 bg-white/40"></div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       )}
 
+      {/* --- Projects Grid (Unchanged) --- */}
       <div className="w-full px-4 md:px-20 py-16 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12 text-center">
@@ -96,12 +118,11 @@ export default function ProjectPage({
                         setOpenTitle(project.title);
                       }
                     }}
-                    // Removed the border/bg-white from the wrapper to match the clean reference style
                     className={`group flex flex-col items-center text-left focus:outline-none ${
                       hasLink ? "cursor-pointer" : "cursor-default opacity-80"
                     }`}
                   >
-                    {/* Media Container - Matches the rounded 'player' look from reference */}
+                    {/* Media Container */}
                     <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-gray-900 shadow-sm group-hover:shadow-xl transition-all duration-300 ease-out">
                       {project.image?.url ? (
                         <Image
@@ -139,16 +160,11 @@ export default function ProjectPage({
                               </svg>
                             </div>
                           </div>
-
-                          {/* Bottom UI Bar simulation (optional details from reference) */}
-                          {/* <div className="absolute bottom-4 left-4 right-4 h-1 bg-white/20 rounded-full overflow-hidden">
-                            <div className="h-full w-1/3 bg-white/60 rounded-full" />
-                          </div> */}
                         </>
                       )}
                     </div>
 
-                    {/* Text Content - Centered below media */}
+                    {/* Text Content */}
                     <div className="mt-6 text-center space-y-1">
                       <h2 className="text-xl font-bold text-gray-900">
                         {project.title}
@@ -163,12 +179,12 @@ export default function ProjectPage({
             </div>
           )}
 
-          {/* View More Button - Conditionally Rendered if limit is set */}
+          {/* View More Button */}
           {limit && (
             <div className="mt-16 flex justify-center">
               <Link
                 href="/projects"
-                className="group inline-flex items-center gap-2 px-8 py-4 bg-black text-white rounded-full font-bold uppercase tracking-wider hover:bg-red-600 transition-colors duration-300"
+                className="group inline-flex items-center gap-2 px-8 py-4 bg-white border border-gray-300 text-black hover:text-white rounded-full font-bold uppercase tracking-wider hover:bg-red-600 transition-colors duration-300"
               >
                 View More Projects
                 <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -177,6 +193,7 @@ export default function ProjectPage({
           )}
         </div>
       </div>
+
       {showCta && <CTASection data={cta} />}
       <VideoModal
         open={Boolean(openVideoUrl)}

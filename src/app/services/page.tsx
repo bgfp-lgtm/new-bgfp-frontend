@@ -102,7 +102,8 @@ export default async function Services() {
                       >
                         {/* Image Side (Half Width) */}
                         <div className="w-full lg:w-1/2">
-                          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-100">
+                          {/* UPDATED: Changed aspect-[4/3] to h-64 to reduce size */}
+                          <div className="relative w-full h-64 overflow-hidden rounded-lg bg-zinc-100">
                             <Image
                               src={
                                 subService.image?.url ||

@@ -225,7 +225,8 @@ export default function ContactPage({ cta }: { cta: any }) {
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="group relative inline-flex h-20 md:h-24 w-full items-center justify-between px-8 md:px-12 overflow-hidden bg-black text-white hover:bg-red-600 transition-colors duration-500"
+                // UPDATED: Added rounded-2xl to the button class
+                className="group relative inline-flex h-20 md:h-24 w-full items-center justify-between px-8 md:px-12 overflow-hidden bg-black text-white hover:bg-red-600 transition-colors duration-500 rounded-2xl"
               >
                 <span className="relative z-10 text-xl md:text-2xl font-bold tracking-wide flex items-center gap-4">
                   {status === "submitting" ? "Processing..." : "Send Message"}

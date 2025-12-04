@@ -146,7 +146,8 @@ export default function IntroSection({ data }: any) {
               >
                 <Link
                   href={data?.link?.path || "#"}
-                  className="bg-linear-to-r from-red-600 to-red-700 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all inline-flex items-center group"
+                  // UPDATED CTA STYLE
+                  className="bg-white text-black border border-gray-300 px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl hover:bg-red-600 hover:text-white hover:border-red-600 transition-all inline-flex items-center group"
                 >
                   {data?.link?.name || "View Our Projects"}
                   <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

@@ -229,10 +229,10 @@ export default function OtherServices({ data, readyData }: any) {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                {/* Primary Button */}
+                {/* Primary Button - UPDATED STYLE */}
                 <button
                   onClick={() => setIsPopupOpen(true)}
-                  className="group relative inline-flex items-center justify-center bg-red-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-red-700 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:-translate-y-1"
+                  className="group relative inline-flex items-center justify-center bg-white text-black border border-gray-300 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:-translate-y-1"
                 >
                   <span className="mr-2">
                     {readyData?.quote?.name || "Get Your Quote"}

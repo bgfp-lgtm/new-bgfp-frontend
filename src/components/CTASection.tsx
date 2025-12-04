@@ -57,7 +57,6 @@ export default function CTASection({ data }: any) {
             className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight whitespace-pre-line"
           >
             {data.title}
-            <span className="text-red-600">.</span>
           </motion.h2>
 
           <motion.div
@@ -84,12 +83,11 @@ export default function CTASection({ data }: any) {
                   duration: 0.5,
                   delay: 0.4 + index * 0.15,
                 }}
-                // Changed padding: p-8 normally, but p-6 on tablet (md) to give text more room
                 className={`relative group p-8 md:p-6 lg:p-8 rounded-3xl border transition-all duration-500
                   ${
                     isContactCard
-                      ? "bg-gradient-to-br from-neutral-900 to-neutral-800 border-red-500/30 hover:border-red-500"
-                      : "bg-neutral-900/50 border-white/5 hover:border-white/10 hover:bg-neutral-900"
+                      ? "bg-gradient-to-br from-neutral-900 to-neutral-800 border-red-500/50 hover:border-red-500"
+                      : "bg-neutral-900/50 border-red-500/50 hover:border-red-500 hover:bg-neutral-900"
                   }
                   backdrop-blur-sm shadow-2xl hover:shadow-red-900/20 hover:-translate-y-2
                 `}
@@ -103,7 +101,7 @@ export default function CTASection({ data }: any) {
                     ${
                       isContactCard
                         ? "bg-red-600 text-white shadow-red-600/20"
-                        : "bg-neutral-800 text-gray-200 group-hover:bg-neutral-700"
+                        : "bg-red-600 text-gray-200 group-hover:bg-red-600"
                     }
                   `}
                   >
@@ -114,7 +112,6 @@ export default function CTASection({ data }: any) {
                     {card.title}
                   </h3>
 
-                  {/* Added 'break-words' to force emails to wrap */}
                   <p className="text-gray-400 leading-relaxed mb-8 whitespace-pre-line text-sm md:text-base break-words w-full">
                     {card.subtitle}
                   </p>
@@ -125,7 +122,8 @@ export default function CTASection({ data }: any) {
                         onClick={handleGetQuoteClick}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="group/btn relative overflow-hidden rounded-full bg-white text-black px-8 py-3 font-bold text-sm transition-all hover:bg-red-500 hover:text-white flex items-center gap-2"
+                        // UPDATED CTA STYLE
+                        className="group/btn relative overflow-hidden rounded-full bg-white text-black border border-gray-300 px-8 py-3 font-bold text-sm transition-all hover:bg-red-600 hover:text-white hover:border-red-600 flex items-center gap-2"
                       >
                         <span>Get Your Quote</span>
                         <FaArrowRight className="-rotate-45 group-hover/btn:rotate-0 transition-transform duration-300" />
