@@ -11,6 +11,7 @@ import { getStrapiMedia } from "@/lib/utils";
 import { FaArrowRight, FaCode } from "react-icons/fa";
 import LogoLoop from "@/components/homepage/LogoLoop";
 import ProjectPage from "@/components/projectpage/ProjectPage";
+import CTASectionTwo from "@/components/CTASectionTwo";
 
 export default async function SoftwareDevelopmentPage() {
   // 1. Fetch Global Data (for CTA)
@@ -62,7 +63,7 @@ export default async function SoftwareDevelopmentPage() {
 
   return (
     <main className="bg-white text-zinc-900 w-full min-h-screen selection:bg-red-600 selection:text-white">
-      {/* --- 1. Cinematic Hero Section --- */}
+      {/* --- 1. Cinematic Hero Section (UNCHANGED) --- */}
       <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden">
         {/* Background Video */}
         <div className="absolute inset-0 w-full h-full z-0">
@@ -105,11 +106,11 @@ export default async function SoftwareDevelopmentPage() {
         </div>
       </section>
 
-      {/* --- 2. Engineering Services (Architectural Grid) --- */}
-      <section className="relative w-full px-6 md:px-12 py-24 bg-white">
+      {/* --- 2. Engineering Services (UPDATED LAYOUT) --- */}
+      <section className="relative w-full py-24 bg-white">
         <div className="max-w-screen-2xl mx-auto">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-zinc-200 pb-8">
+          <div className="flex flex-col px-6 md:flex-row justify-between items-end mb-16 border-b border-zinc-200 pb-8">
             <div>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
                 {softwareServiceData?.title || "Core Competencies"}
@@ -126,68 +127,52 @@ export default async function SoftwareDevelopmentPage() {
             </div>
           </div>
 
-          {/* The Grid: 2 Columns for Cinematic Width */}
-          {/* UPDATED: items-start to prevent stretching */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200 border border-zinc-200 shadow-sm items-start">
+          {/* The Grid: 2 Columns with Gap */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-100 p-8 w-full items-stretch">
             {subServices.map((service: any, index: number) => {
               const imageUrl = getStrapiMedia(service.image?.url);
 
               return (
                 <div
                   key={service.id || index}
-                  // UPDATED: h-full flex column
-                  className="group relative bg-white h-full flex flex-col justify-between overflow-hidden hover:bg-zinc-50 transition-colors duration-500"
+                  className="group relative bg-white h-full flex flex-col p-8 md:p-10 transition-all duration-500 hover:z-10"
                 >
-                  {/* Text Wrapper - UPDATED: min-h-[320px] for alignment */}
-                  <div className="p-8 md:p-10 relative z-20 flex flex-col bg-white min-h-[320px]">
-                    {/* Header: Number & Icon */}
-                    <div className="flex justify-between items-start mb-6">
-                      <span className="text-xs font-mono text-zinc-300">
-                        0{index + 1}
-                      </span>
-                      <div className="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-colors duration-300">
-                        <FaArrowRight className="w-3 h-3 text-zinc-300 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-300" />
-                      </div>
-                    </div>
+                  {/* 1. TITLE */}
+                  <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-6 tracking-tight">
+                    {service.title}
+                  </h3>
 
-                    {/* Content */}
-                    <h3 className="text-3xl font-bold text-zinc-900 mb-4 leading-tight group-hover:translate-x-1 transition-transform duration-300">
-                      {service.title}
-                    </h3>
-                    <p className="text-zinc-500 text-sm md:text-base leading-relaxed mb-8 opacity-80 group-hover:opacity-100">
-                      {service.description}
-                    </p>
-
-                    {/* Start Project Button - ADDED */}
-                    <div className="mt-auto">
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-zinc-200 rounded-full text-xs font-bold uppercase tracking-widest text-zinc-900 transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-lg"
-                      >
-                        <span>Start Project</span>
-                        <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Cinematic Image Reveal (Bottom) */}
-                  {/* UPDATED: Fixed height h-64 to match marketing page */}
-                  <div className="relative w-full h-64 border-t border-zinc-100">
+                  {/* 2. IMAGE (Aspect Video) */}
+                  <div className="relative w-full mb-8 overflow-hidden bg-zinc-50 rounded-lg aspect-video">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
                         alt={service.title}
                         fill
-                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     ) : (
-                      <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-zinc-300 text-sm font-mono">
+                      <div className="w-full h-full flex items-center justify-center text-zinc-300 text-sm font-mono border border-zinc-100">
                         [Image Not Available]
                       </div>
                     )}
-                    {/* Subtle noise overlay */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none mix-blend-overlay transition-opacity duration-500"></div>
+                  </div>
+
+                  {/* 3. DESCRIPTION (Flex Grow) */}
+                  <p className="text-zinc-500 text-base leading-relaxed mb-8 flex-grow">
+                    {service.description}
+                  </p>
+
+                  {/* 4. BUTTON (Full width, rounded-2xl) */}
+                  <div className="mt-auto w-full">
+                    <Link
+                      href="/contact"
+                      className="flex items-center justify-center gap-3 w-full py-4 bg-white border border-zinc-200 text-zinc-900 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-lg group-hover:border-zinc-300"
+                    >
+                      <span>Start Project</span>
+                      <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
                   </div>
                 </div>
               );
@@ -217,7 +202,7 @@ export default async function SoftwareDevelopmentPage() {
         </section>
       )}
 
-      {/* --- 4. Our Latest Projects (Added Section) --- */}
+      {/* --- 4. Our Latest Projects --- */}
       <ProjectPage
         projects={projects}
         showHero={false}
@@ -226,7 +211,7 @@ export default async function SoftwareDevelopmentPage() {
         limit={2}
       />
 
-      <CTASection data={cta} />
+      <CTASectionTwo />
     </main>
   );
 }

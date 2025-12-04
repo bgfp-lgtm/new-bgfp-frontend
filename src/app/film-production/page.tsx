@@ -11,6 +11,7 @@ import { getStrapiMedia } from "@/lib/utils";
 import { FaArrowRight, FaFilm } from "react-icons/fa";
 import LogoLoop from "@/components/homepage/LogoLoop";
 import ProjectPage from "@/components/projectpage/ProjectPage";
+import CTASectionTwo from "@/components/CTASectionTwo";
 
 export default async function FilmProductionPage() {
   // 1. Fetch Global Data (for CTA)
@@ -68,7 +69,7 @@ export default async function FilmProductionPage() {
   return (
     <main className="bg-white text-zinc-900 w-full min-h-screen selection:bg-red-600 selection:text-white">
       {/* =========================================
-          1. CINEMATIC HERO SECTION
+          1. CINEMATIC HERO SECTION (UNCHANGED)
       ========================================= */}
       <section className="relative h-[90vh] w-full flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 overflow-hidden">
         {/* Background Video */}
@@ -113,12 +114,12 @@ export default async function FilmProductionPage() {
       </section>
 
       {/* =========================================
-          2. PRODUCTION SERVICES (FIXED LAYOUT)
+          2. PRODUCTION SERVICES (UPDATED LAYOUT)
       ========================================= */}
-      <section className="relative w-full px-6 md:px-12 py-32 bg-white">
+      <section className="relative w-full  py-32 bg-white">
         <div className="max-w-screen-2xl mx-auto">
           {/* Section Header */}
-          <div className="flex flex-col lg:flex-row justify-between items-end mb-20 border-b border-zinc-200 pb-10">
+          <div className="flex flex-col  px-6 md:px-12 lg:flex-row justify-between items-end mb-20 border-b border-zinc-200 pb-10">
             <div className="max-w-5xl">
               <span className="text-red-600 font-mono text-xs font-bold uppercase tracking-widest mb-4 block">
                 What We Do
@@ -140,56 +141,51 @@ export default async function FilmProductionPage() {
           </div>
 
           {/* The Grid */}
-          {/* FIX: Used 'items-start' to allow cards to be natural height, preventing awkward stretching/whitespace */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200 border border-zinc-200 shadow-sm items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-100 p-8 border border-zinc-200 items-stretch">
             {subServices.map((service: any, index: number) => {
               const imageUrl = getStrapiMedia(service.image?.url);
 
               return (
                 <div
                   key={service.id || index}
-                  className="group relative bg-white h-full flex flex-col overflow-hidden hover:z-10 transition-all duration-500"
+                  className="group relative  bg-white h-full flex flex-col p-8 md:p-10 transition-all duration-500 hover:z-10"
                 >
-                  {/* Text Content */}
-                  {/* FIX: Added min-h-[320px] to force text sections to be roughly equal, aligning the image tops */}
-                  <div className="p-8 md:p-10 relative z-20 flex flex-col items-start bg-white min-h-[320px]">
-                    <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-4 tracking-tight">
-                      {service.title}
-                    </h3>
+                  {/* 1. TITLE */}
+                  <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-6 tracking-tight">
+                    {service.title}
+                  </h3>
 
-                    <p className="text-zinc-500 text-base leading-relaxed mb-8 max-w-md">
-                      {service.description}
-                    </p>
-
-                    <div className="mt-auto">
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-zinc-200 rounded-full text-xs font-bold uppercase tracking-widest text-zinc-900 transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-lg"
-                      >
-                        <span>Start Project</span>
-                        <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Image Area - FULL WIDTH & NATURAL HEIGHT */}
-                  <div className="relative w-full border-t border-zinc-100">
+                  {/* 2. IMAGE */}
+                  <div className="relative w-full mb-8 overflow-hidden bg-zinc-50 rounded-lg aspect-video">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
                         alt={service.title}
-                        width={0}
-                        height={0}
-                        sizes="100vw"
-                        // FIX: w-full h-auto ensures NO CROP and FULL WIDTH.
-                        className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     ) : (
-                      <div className="w-full h-64 bg-zinc-50 flex items-center justify-center text-zinc-300 text-sm font-mono">
+                      <div className="w-full h-full flex items-center justify-center text-zinc-300 text-sm font-mono border border-zinc-100">
                         IMAGE NOT FOUND
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  </div>
+
+                  {/* 3. DESCRIPTION */}
+                  <p className="text-zinc-500 text-base leading-relaxed mb-8 flex-grow">
+                    {service.description}
+                  </p>
+
+                  {/* 4. BUTTON (Full width, rounded-2xl) */}
+                  <div className="mt-auto w-full">
+                    <Link
+                      href="/contact"
+                      className="flex items-center justify-center gap-3 w-full py-4 bg-white border border-zinc-200 text-zinc-900 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-lg group-hover:border-zinc-300"
+                    >
+                      <span>Start Project</span>
+                      <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
                   </div>
                 </div>
               );
@@ -234,7 +230,7 @@ export default async function FilmProductionPage() {
         />
       </div>
 
-      <CTASection data={cta} />
+      <CTASectionTwo />
     </main>
   );
 }
