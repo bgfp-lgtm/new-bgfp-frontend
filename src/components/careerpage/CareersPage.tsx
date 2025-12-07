@@ -285,7 +285,7 @@ export default function CareersPage({ careersBlock, cta }: any) {
                       </div>
                     </div>
 
-                    <button className="inline-flex items-center gap-2 px-8 py-4 bg-zinc-900 text-white font-bold uppercase tracking-widest text-xs rounded-2xl hover:bg-red-600 transition-colors duration-300 shadow-lg hover:shadow-red-600/20">
+                    <button className="inline-flex items-center gap-2 px-8 py-4 bg-transparent text-black border border-red-600 font-bold uppercase tracking-widest text-xs rounded-2xl hover:bg-red-600 hover:text-white cursor-pointer transition-colors duration-300 hover:shadow-red-600/20">
                       Apply Now <FaArrowRight />
                     </button>
                   </div>

@@ -232,7 +232,7 @@ export default function OtherServices({ data, readyData }: any) {
                 {/* Primary Button - UPDATED STYLE */}
                 <button
                   onClick={() => setIsPopupOpen(true)}
-                  className="group relative inline-flex items-center justify-center bg-white text-black border border-gray-300 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:-translate-y-1"
+                  className="group relative inline-flex items-center justify-center bg-white text-black border border-gray-300 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] cursor-pointer hover:-translate-y-1"
                 >
                   <span className="mr-2">
                     {readyData?.quote?.name || "Get Your Quote"}
@@ -243,7 +243,7 @@ export default function OtherServices({ data, readyData }: any) {
                 {/* Secondary Button */}
                 <button
                   onClick={() => setIsPopupOpen(true)}
-                  className="group inline-flex items-center justify-center bg-transparent border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-white/10 hover:border-white/40"
+                  className="group inline-flex items-center justify-center bg-transparent border border-red-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-red-600 cursor-pointer hover:border-red-600"
                 >
                   <BsTelephone className="w-5 h-5 mr-2 text-gray-400 group-hover:text-white transition-colors" />
                   <span>Contact Us</span>

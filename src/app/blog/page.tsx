@@ -4,7 +4,13 @@ import Image from "next/image";
 import CTASection from "@/components/CTASection";
 import { getBlogs, getGlobalData } from "@/data/loader";
 
-import { FaUser, FaCalendar, FaTag, FaImage } from "react-icons/fa";
+import {
+  FaUser,
+  FaCalendar,
+  FaTag,
+  FaImage,
+  FaArrowRight,
+} from "react-icons/fa";
 
 export default async function BlogPage() {
   const { data: posts } = await getBlogs();
@@ -100,9 +106,14 @@ export default async function BlogPage() {
                       "Discover the latest insights and behind-the-scenes content from our film production team."}
                   </p>
 
-                  {/* Read More Button */}
-                  <button className="border border-gray-300 bg-transparent text-gray-900 px-6 py-3 rounded-md hover:bg-gray-50 transition-colors duration-200 font-medium">
-                    Read More
+                  {/* Read More Button (UPDATED) */}
+                  <button
+                    className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-md font-bold uppercase tracking-widest text-xs transition-all duration-300 
+                    bg-transparent border border-red-600 text-red-600 
+                    hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
+                  >
+                    <span>Read More</span>
+                    <FaArrowRight className="transition-transform duration-300 group-hover/btn:translate-x-1" />
                   </button>
                 </div>
               </Link>
@@ -129,11 +140,9 @@ export default async function BlogPage() {
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    // UPDATED: Changed block to flex flex-col h-full to make cards equal height
                     className="flex flex-col h-full bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"
                   >
                     {/* Post Image */}
-                    {/* UPDATED: Added shrink-0 to prevent image sizing issues */}
                     <div className="relative w-full h-64 overflow-hidden shrink-0">
                       {post.image && post.image.url ? (
                         <Image
@@ -149,7 +158,6 @@ export default async function BlogPage() {
                     </div>
 
                     {/* Post Content */}
-                    {/* UPDATED: Added flex flex-col flex-grow to layout content and push footer down */}
                     <div className="p-6 flex flex-col flex-grow">
                       <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 leading-tight">
                         {post.title}
@@ -162,11 +170,17 @@ export default async function BlogPage() {
                           "Read more about this topic and discover insights from our production team."}
                       </p>
 
-                      {/* Read More Button */}
-                      {/* UPDATED: Added mt-auto to push button and metadata to bottom */}
-                      <button className="mt-auto border border-gray-300 w-fit bg-transparent text-gray-900 px-6 py-3 rounded-md hover:bg-gray-50 transition-colors duration-200 font-medium mb-6">
-                        Read More
-                      </button>
+                      {/* Read More Button (UPDATED) */}
+                      <div className="mt-auto mb-6">
+                        <button
+                          className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-md font-bold uppercase tracking-widest text-xs transition-all duration-300 
+                          bg-transparent border border-red-600 text-red-600 
+                          hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
+                        >
+                          <span>Read More</span>
+                          <FaArrowRight className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+                        </button>
+                      </div>
 
                       {/* Post Metadata */}
                       <div className="space-y-2 text-gray-500 text-sm">

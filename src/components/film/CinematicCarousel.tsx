@@ -7,8 +7,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 import VideoModal from "@/components/projectpage/VideoModal";
@@ -22,7 +20,7 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
   const [openVideoUrl, setOpenVideoUrl] = useState<string | null>(null);
   const [openTitle, setOpenTitle] = useState<string | undefined>(undefined);
 
-  // 1. Configure Auto-play: 4000ms (4 seconds) delay
+  // 1. Configure Auto-play: 2000ms delay as per your code
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
 
   useEffect(() => {
@@ -43,7 +41,7 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
   ) => {
     e.stopPropagation();
 
-    // FIX: Stop autoplay when "Watch Now" is clicked/tapped
+    // Stop autoplay when "Watch Now" is clicked/tapped
     if (plugin.current) {
       plugin.current.stop();
     }
@@ -100,7 +98,7 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
                       "relative h-[60vh] md:h-[80vh] w-full rounded-3xl overflow-hidden transform transition-all duration-700 shadow-2xl bg-black",
                       isActive
                         ? "scale-100 opacity-100 shadow-black/30 z-10"
-                        : "scale-[0.92] opacity-50 grayscale-[30%] blur-[1px] z-0" // UPDATED: opacity-50
+                        : "scale-[0.92] opacity-50 grayscale-[30%] blur-[1px] z-0"
                     )}
                   >
                     {/* Background Image */}
@@ -132,13 +130,19 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
                             : "translate-y-8 opacity-0"
                         )}
                       >
-                        {/* 1. Watch Now Button */}
+                        {/* 1. Watch Now Button (UPDATED STYLE) */}
                         {project.link && (
                           <button
                             onClick={(e) =>
                               handleStreamClick(e, project.link, project.title)
                             }
-                            className="group bg-white text-black hover:bg-zinc-200 transition-all duration-300 px-8 py-3.5 rounded-2xl font-bold text-sm md:text-base inline-flex items-center gap-3 shadow-lg hover:shadow-xl hover:scale-105"
+                            className="group inline-flex items-center gap-3 px-8 py-4 rounded-lg font-bold uppercase tracking-widest text-xs transition-all duration-300 
+                            
+                            /* Inactive State: Red Border, Red Text, Transparent BG */
+                            bg-transparent border border-red-600 text-white
+                            
+                            /* Active/Hover State: Filled Red, White Text, Shadow & Lift */
+                            hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
                           >
                             <FaPlay className="w-3 h-3" />
                             <span>Watch Now</span>
@@ -156,8 +160,6 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
               );
             })}
           </CarouselContent>
-
-          {/* Navigation Arrows */}
         </Carousel>
 
         {/* Circle Sliders (Dots) */}

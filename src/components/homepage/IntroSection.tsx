@@ -1,16 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import { FiArrowRight, FiZap } from "react-icons/fi";
-
-// Make slugs for URLs
-const slugify = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/ & /g, "-")
-    .replace(/ /g, "-")
-    .replace(/[^\w-]+/g, "");
+import { FiArrowRight } from "react-icons/fi";
 
 // Helper: split text into 2 parts around a highlight word
 const highlightText = (text: string | undefined, highlight: string) => {
@@ -27,10 +20,6 @@ export default function IntroSection({ data }: any) {
 
   const main = highlightText(data?.title, "UK");
   const titleTwo = highlightText(data?.title2, "Empowering Businesses.");
-  const rightDesc = highlightText(
-    data?.right_description,
-    "real business success"
-  );
 
   return (
     <section className="relative w-full overflow-hidden bg-white">
@@ -89,8 +78,8 @@ export default function IntroSection({ data }: any) {
           {/* ------------------ CONTENT GRID ------------------ */}
           {/* ------------------------------------------------- */}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            {/* ========== LEFT SIDE CONTENT ========== */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* ========== LEFT SIDE CONTENT (Text & Button) ========== */}
             <div className="space-y-10">
               <div className="space-y-6">
                 {/* Second Title */}
@@ -137,78 +126,51 @@ export default function IntroSection({ data }: any) {
                 ))}
               </div>
 
-              {/* CTA Button */}
+              {/* CTA Button (UPDATED STYLE) */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className=""
               >
                 <Link
                   href={data?.link?.path || "#"}
-                  // UPDATED: Added duration-300 to fix delayed text color feel
-                  className="bg-white text-black border border-gray-300 px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-xl hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300 inline-flex items-center group"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 group
+                  
+                  /* Inactive: Red Border, Red Text, Transparent BG */
+                  bg-transparent border border-red-600 text-red-600
+                  
+                  /* Active/Hover: Filled Red, White Text, Shadow & Lift */
+                  hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
                 >
                   {data?.link?.name || "View Our Projects"}
-                  <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <FiArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </motion.div>
             </div>
 
-            {/* ========== RIGHT SIDE CONTENT ========== */}
-            <div className="space-y-10 py-2">
+            {/* ========== RIGHT SIDE CONTENT (Image Only) ========== */}
+            <div className="h-full w-full">
               <motion.div
-                className="bg-linear-to-br from-gray-50 to-white border border-gray-100 rounded-2xl p-8 shadow-sm"
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                className="relative w-full h-full min-h-[400px] lg:min-h-[500px] rounded-3xl overflow-hidden shadow-lg"
+                initial={{ opacity: 0, y: 18, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                {/* Description with highlight */}
-                <motion.p
-                  className="text-gray-700 text-lg leading-relaxed mb-8"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                >
-                  {rightDesc.before}
-                  <span className="font-semibold text-red-600">
-                    real business success
-                  </span>
-                  {rightDesc.after}
-                </motion.p>
-
-                {/* Four cards */}
-                <div className="grid grid-cols-2 gap-4">
-                  {data?.right_block?.map((item: any, index: number) => (
-                    <Link
-                      href={`/${slugify(item.title)}`}
-                      key={item.id}
-                      // This class ensures the last item spans full width if the total count is odd
-                      className="last:odd:col-span-2"
-                    >
-                      <motion.div
-                        className="group h-full p-4 rounded-xl bg-white border border-gray-300 hover:border-red-200 hover:shadow-md transition-all"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: 0.1 + index * 0.1 }}
-                        whileHover={{ y: -4 }}
-                      >
-                        <div className="h-10 w-10 rounded-lg bg-red-600 mb-3 flex items-center justify-center">
-                          <FiZap className="h-5 w-5 text-white" />
-                        </div>
-
-                        <p className="font-semibold text-gray-900 text-base mb-1">
-                          {item.title}
-                        </p>
-                        <p className="text-gray-500 text-sm">{item.subtitle}</p>
-                      </motion.div>
-                    </Link>
-                  ))}
-                </div>
+                {data?.right_image_url ? (
+                  <Image
+                    src={data.right_image_url}
+                    alt={data?.title || "Intro section image"}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-400 font-medium">
+                    Image Not Found
+                  </div>
+                )}
               </motion.div>
             </div>
           </div>

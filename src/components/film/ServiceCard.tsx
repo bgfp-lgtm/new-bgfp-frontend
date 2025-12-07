@@ -26,11 +26,9 @@ export default function ServiceCard({
   return (
     <>
       {/* --- SERVICE CARD UI --- */}
-      <div className="group relative bg-white  h-full flex flex-col p-8 md:p-10 transition-all duration-500 hover:z-10 shadow-sm hover:shadow-md">
-        <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-6 tracking-tight">
-          {service.title}
-        </h3>
-        <div className="relative w-full mb-8 overflow-hidden bg-zinc-50 rounded-lg aspect-video">
+      <div className="group relative bg-white h-full flex flex-col p-8 md:p-10 transition-all duration-500 hover:z-10 shadow-sm hover:shadow-md border border-zinc-100/50">
+        {/* 1. IMAGE */}
+        <div className="relative w-full mb-6 overflow-hidden bg-zinc-50 rounded-lg aspect-video">
           {imageUrl ? (
             <Image
               src={imageUrl}
@@ -45,17 +43,25 @@ export default function ServiceCard({
             </div>
           )}
         </div>
+
+        {/* 2. TITLE */}
+        <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-6 tracking-tight">
+          {service.title}
+        </h3>
+
+        {/* 3. DESCRIPTION */}
         <p className="text-zinc-500 text-base leading-relaxed mb-8 flex-grow">
           {service.description}
         </p>
+
+        {/* 4. BUTTON (Main Card) */}
         <div className="mt-auto w-full">
-          {/* Changed from Link to Button */}
           <button
             onClick={() => toggleModal(true)}
-            className="flex items-center justify-center gap-3 w-full py-4 bg-white border border-zinc-200 text-zinc-900 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-lg group-hover:border-zinc-300 cursor-pointer"
+            className="group/btn flex items-center justify-center gap-3 w-full py-5 rounded-2xl font-bold uppercase tracking-widest text-md transition-all duration-300 cursor-pointer bg-transparent border border-red-600 text-red-600 hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
           >
             <span>Start Project</span>
-            <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+            <FaArrowRight className="transition-transform duration-300 group-hover/btn:translate-x-1" />
           </button>
         </div>
       </div>
@@ -63,15 +69,12 @@ export default function ServiceCard({
       {/* --- MODAL / POPUP --- */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-zinc-900/90 backdrop-blur-sm transition-opacity"
             onClick={() => toggleModal(false)}
           />
 
-          {/* Modal Content */}
           <div className="relative bg-white w-full max-w-lg rounded-3xl p-8 md:p-10 shadow-2xl animate-in fade-in zoom-in duration-300 max-h-[90vh] overflow-y-auto">
-            {/* Close Button */}
             <button
               onClick={() => toggleModal(false)}
               className="absolute top-6 right-6 text-zinc-400 hover:text-red-600 transition-colors"
@@ -79,7 +82,6 @@ export default function ServiceCard({
               <FaTimes size={24} />
             </button>
 
-            {/* Header */}
             <div className="mb-8">
               <span className="text-red-600 font-mono text-xs font-bold uppercase tracking-widest mb-2 block">
                 Get in Touch
@@ -89,9 +91,7 @@ export default function ServiceCard({
               </h3>
             </div>
 
-            {/* Form */}
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-              {/* 01 Name */}
               <div>
                 <label className="block text-xs font-bold uppercase text-zinc-500 mb-2">
                   Name
@@ -103,7 +103,6 @@ export default function ServiceCard({
                 />
               </div>
 
-              {/* 02 Email */}
               <div>
                 <label className="block text-xs font-bold uppercase text-zinc-500 mb-2">
                   Email
@@ -115,7 +114,6 @@ export default function ServiceCard({
                 />
               </div>
 
-              {/* 03 Phone (Added) */}
               <div>
                 <label className="block text-xs font-bold uppercase text-zinc-500 mb-2">
                   Phone (Optional)
@@ -127,7 +125,6 @@ export default function ServiceCard({
                 />
               </div>
 
-              {/* 04 Inquiry Type (Added) */}
               <div>
                 <label className="block text-xs font-bold uppercase text-zinc-500 mb-2">
                   Inquiry Type
@@ -146,7 +143,6 @@ export default function ServiceCard({
                     <option value="Film Production">Film Production</option>
                     <option value="Marketing">Marketing</option>
                   </select>
-                  {/* Custom Arrow Indicator */}
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
                     <svg
                       className="w-4 h-4"
@@ -165,7 +161,6 @@ export default function ServiceCard({
                 </div>
               </div>
 
-              {/* 05 Message */}
               <div>
                 <label className="block text-xs font-bold uppercase text-zinc-500 mb-2">
                   Project Details
@@ -177,11 +172,19 @@ export default function ServiceCard({
                 ></textarea>
               </div>
 
+              {/* --- UPDATED SUBMIT BUTTON --- */}
               <button
                 type="submit"
-                className="w-full bg-red-600 text-white font-bold py-4 rounded-xl uppercase tracking-widest text-xs hover:bg-red-700 transition-colors mt-4"
+                className="group/submit flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300 mt-4 
+                
+                /* Inactive State (Ghost) */
+                bg-transparent border border-red-600 text-red-600 
+                
+                /* Hover State (Filled & Animated) */
+                hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
               >
-                Send Request
+                <span>Send Request</span>
+                <FaArrowRight className="transition-transform duration-300 group-hover/submit:translate-x-1" />
               </button>
             </form>
           </div>

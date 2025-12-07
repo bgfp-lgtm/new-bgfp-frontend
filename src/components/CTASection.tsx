@@ -123,7 +123,7 @@ export default function CTASection({ data }: any) {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         // UPDATED CTA STYLE
-                        className="group/btn relative overflow-hidden rounded-2xl bg-white text-black border border-gray-300 px-8 py-3 font-bold text-sm transition-all hover:bg-red-600 hover:text-white hover:border-red-600 flex items-center gap-2"
+                        className="group/btn relative overflow-hidden rounded-lg bg-transparent text-white cursor-pointer border border-red-600 px-8 py-3 font-bold text-sm transition-all hover:bg-red-600 hover:text-white hover:border-red-600 flex items-center gap-2"
                       >
                         <span>Get Your Quote</span>
                         <FaArrowRight className="-rotate-45 group-hover/btn:rotate-0 transition-transform duration-300" />

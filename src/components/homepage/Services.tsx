@@ -107,7 +107,7 @@ export default function Services({ data }: any) {
                     <div className="mt-6 pointer-events-auto">
                       <Link
                         href={card.link?.path || "#"}
-                        className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-3 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-red-600/30"
+                        className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-red-600/30"
                       >
                         <span className="mr-2">
                           {card.link?.name || "Learn More"}

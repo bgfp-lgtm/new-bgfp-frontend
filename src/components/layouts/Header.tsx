@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { FiMenu, FiChevronDown } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
+import { FaArrowRight } from "react-icons/fa";
 import { getStrapiMedia } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,7 +22,7 @@ export default function Header({ data }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
   const [expandedLink, setExpandedLink] = useState<number | null>(null);
-  const [isScrolled, setIsScrolled] = useState(false); // New state for scroll detection
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const pathname = usePathname();
   const logoUrl = getStrapiMedia(data?.logo?.url) || "/logo.png";
@@ -47,7 +48,6 @@ export default function Header({ data }: HeaderProps) {
   // Handle Scroll Detection
   useEffect(() => {
     const handleScroll = () => {
-      // If user scrolls down more than 50px, toggle state
       if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
@@ -82,14 +82,10 @@ export default function Header({ data }: HeaderProps) {
     setExpandedLink(null);
   };
 
-  // Dynamic Background Logic
-  // 1. If Menu is Open -> Keep Solid Black (so white text is visible over white menu)
-  // 2. If Scrolled -> Transparent Black + Blur
-  // 3. Default -> Solid Black
   const headerBackgroundClass = isMenuOpen
     ? "bg-black"
     : isScrolled
-    ? "bg-black/80 backdrop-blur-md shadow-sm" // Reduced opacity + blur
+    ? "bg-black/80 backdrop-blur-md shadow-sm"
     : "bg-black";
 
   return (
@@ -185,13 +181,20 @@ export default function Header({ data }: HeaderProps) {
           ))}
         </nav>
 
-        {/* CTA Button */}
+        {/* CTA Button (DESKTOP - UPDATED) */}
         {data?.cta && (
           <Link
             href={data.cta.path}
-            className="hidden lg:inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold bg-red-500/20 text-red-600 transition-colors duration-300 hover:bg-red-200"
+            className="hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold uppercase tracking-widest text-xs transition-all duration-300 group
+            
+            /* Inactive State: Transparent BG, Red Border, WHITE TEXT */
+            bg-transparent border border-red-600 text-white 
+            
+            /* Active/Hover State: Filled Red, White Text */
+            hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
           >
-            {data.cta.name}
+            <span>{data.cta.name}</span>
+            <FaArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         )}
 
@@ -240,7 +243,6 @@ export default function Header({ data }: HeaderProps) {
                   }}
                 >
                   {link.children ? (
-                    /* --- MOBILE: CLICKING TEXT TOGGLES ACCORDION --- */
                     <div
                       className={`text-2xl text-gray-800 hover:text-red-500 ${
                         isParentActive(link.children)
@@ -251,7 +253,6 @@ export default function Header({ data }: HeaderProps) {
                       {link.name}
                     </div>
                   ) : (
-                    /* --- MOBILE: CLICKING TEXT NAVIGATES --- */
                     <Link
                       href={link.path}
                       className={`text-2xl text-gray-800 hover:text-red-500 ${
@@ -265,7 +266,6 @@ export default function Header({ data }: HeaderProps) {
                     </Link>
                   )}
 
-                  {/* Mobile Chevron */}
                   {link.children && (
                     <FiChevronDown
                       className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${
@@ -275,7 +275,6 @@ export default function Header({ data }: HeaderProps) {
                   )}
                 </div>
 
-                {/* Mobile Submenu Accordion */}
                 <AnimatePresence>
                   {link.children && expandedLink === link.id && (
                     <motion.div
@@ -305,13 +304,20 @@ export default function Header({ data }: HeaderProps) {
               </div>
             ))}
 
+            {/* CTA Button (MOBILE - UPDATED) */}
             {data?.cta && (
               <Link
                 href={data.cta.path}
                 onClick={closeMenu}
-                className="mt-6 inline-flex items-center px-8 py-4 rounded-xl text-xl font-semibold bg-red-500 text-white transition-colors duration-300 hover:bg-red-600"
+                className="mt-6 group inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300
+                
+                /* Mobile: Filled Red to ensure White Text is visible on White BG */
+                bg-red-600 text-white shadow-lg
+                
+                hover:bg-red-700 hover:shadow-xl hover:-translate-y-1"
               >
-                {data.cta.name}
+                <span>{data.cta.name}</span>
+                <FaArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             )}
           </div>
