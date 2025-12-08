@@ -14,6 +14,7 @@ import {
   BsTelephone,
 } from "react-icons/bs";
 import Link from "next/link";
+import Image from "next/image"; // <--- 1. Imported Image
 
 // --- Component Helpers ---
 
@@ -82,7 +83,7 @@ const ContactModal = ({
   </AnimatePresence>
 );
 
-// Service Card (Updated to match standard button style)
+// Service Card (Unchanged)
 const ServiceCard = ({ service }: { service: any }) => (
   <div className="group relative bg-white p-8 h-full border-r border-gray-100 min-w-[300px] md:min-w-[400px] flex flex-col justify-between hover:bg-red-50/30 transition-colors duration-300">
     <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-red-600 transition-colors duration-300" />
@@ -209,14 +210,29 @@ export default function OtherServices({ data, readyData }: any) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative overflow-hidden rounded-[2.5rem] bg-neutral-900 px-6 py-16 sm:px-16 sm:py-24 "
+            // Removed 'bg-neutral-900', kept relative and overflow-hidden
+            className="relative overflow-hidden rounded-[2.5rem] px-6 py-16 sm:px-16 sm:py-24"
           >
-            {/* Background Decor: Red Glows */}
-            <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-[100px] pointer-events-none" />
-            <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none" />
+            {/* --- NEW BACKGROUND IMAGE LOGIC --- */}
+            <div className="absolute inset-0 z-0">
+              <Image
+                src="/bg.jpg"
+                alt="CTA Background"
+                fill
+                className="object-cover"
+                priority
+              />
+              {/* Dark Overlay because text is white. 
+                  Adjust 'bg-black/80' to 'bg-black/60' if you want image to be brighter. */}
+              <div className="absolute inset-0 bg-black/80" />
+            </div>
 
-            {/* Background Decor: Grid Pattern */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-soft-light pointer-events-none"></div>
+            {/* Background Decor: Red Glows (Kept, but on top of image/overlay) */}
+            {/* <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-[100px] pointer-events-none z-0" />
+            <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none z-0" /> */}
+
+            {/* Background Decor: Grid Pattern (Optional, can remove if looks busy) */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-soft-light pointer-events-none z-0"></div>
 
             <div className="relative z-10 flex flex-col items-center justify-center text-center">
               <h3 className="mb-6 text-3xl font-bold tracking-tight text-white md:text-5xl leading-tight">
@@ -229,7 +245,7 @@ export default function OtherServices({ data, readyData }: any) {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                {/* Primary Button - UPDATED STYLE (Outline Red to match IntroSection) */}
+                {/* Primary Button */}
                 <button
                   onClick={() => setIsPopupOpen(true)}
                   className="group relative inline-flex items-center justify-center bg-transparent text-white border border-red-600 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] cursor-pointer hover:-translate-y-1"
@@ -240,7 +256,7 @@ export default function OtherServices({ data, readyData }: any) {
                   <BsArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
 
-                {/* Secondary Button - UPDATED STYLE (White Outline for Secondary) */}
+                {/* Secondary Button */}
                 <button
                   onClick={() => setIsPopupOpen(true)}
                   className="group inline-flex items-center justify-center bg-transparent border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-white/10 cursor-pointer hover:border-white/40"

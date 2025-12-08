@@ -149,7 +149,7 @@ export default function IntroSection({ data }: any) {
               </motion.div>
             </div>
 
-            {/* ========== RIGHT SIDE CONTENT (Image Only) ========== */}
+            {/* ========== RIGHT SIDE CONTENT (Updated Image) ========== */}
             <div className="h-full w-full">
               <motion.div
                 className="relative w-full h-full min-h-[400px] lg:min-h-[500px] rounded-3xl overflow-hidden shadow-lg"
@@ -158,19 +158,14 @@ export default function IntroSection({ data }: any) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                {data?.right_image_url ? (
-                  <Image
-                    src={data.right_image_url}
-                    alt={data?.title || "Intro section image"}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-400 font-medium">
-                    Image Not Found
-                  </div>
-                )}
+                <Image
+                  src="/rightimage.jpg" // Using the local image from public folder
+                  alt={data?.title || "Intro section image"}
+                  fill
+                  priority // Loads image faster since it's above the fold
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
               </motion.div>
             </div>
           </div>

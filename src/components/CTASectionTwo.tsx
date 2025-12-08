@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { FaArrowRight, FaPhoneAlt } from "react-icons/fa";
+// Removed unused Fa imports
 import { motion } from "framer-motion";
 import { BsArrowRight, BsTelephone } from "react-icons/bs";
+import Image from "next/image"; // <--- 1. Import Image
 
 export default function CTASectionTwo() {
   return (
@@ -13,15 +14,32 @@ export default function CTASectionTwo() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="relative overflow-hidden rounded-[2.5rem] bg-neutral-900 px-6 py-16 sm:px-16 sm:py-24 shadow-2xl"
+        // 2. Removed 'bg-neutral-900' here. Kept relative, overflow-hidden, rounded, shadow.
+        className="relative overflow-hidden rounded-[2.5rem] px-6 py-16 sm:px-16 sm:py-24 shadow-2xl"
       >
-        {/* Background Decor: Red Glows */}
-        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-[100px] pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none" />
+        {/* --- 3. NEW BACKGROUND IMAGE SECTION START --- */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/bg.jpg"
+            alt="CTA Background"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Dark Overlay to ensure white text readability.
+              Adjust 'bg-black/80' to 'bg-black/60' or 'bg-black/90' to tune brightness. */}
+          <div className="absolute inset-0 bg-black/80" />
+        </div>
+        {/* --- BACKGROUND IMAGE SECTION END --- */}
+
+        {/* Background Decor: Red/Blue Glows (These will sit on top of the dark overlay) */}
+        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-[100px] pointer-events-none z-0" />
+        <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none z-0" />
 
         {/* Background Decor: Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-soft-light pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-soft-light pointer-events-none z-0"></div>
 
+        {/* Content Section (Has z-10 to stay on top) */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center">
           {/* Static Title */}
           <h3 className="mb-6 text-3xl font-bold tracking-tight text-white md:text-5xl leading-tight">
