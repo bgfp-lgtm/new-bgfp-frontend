@@ -28,13 +28,13 @@ export default function CTASectionTwo() {
           />
           {/* Dark Overlay to ensure white text readability.
               Adjust 'bg-black/80' to 'bg-black/60' or 'bg-black/90' to tune brightness. */}
-          <div className="absolute inset-0 bg-black/80" />
+          <div className="absolute inset-0 bg-black/70" />
         </div>
         {/* --- BACKGROUND IMAGE SECTION END --- */}
 
         {/* Background Decor: Red/Blue Glows (These will sit on top of the dark overlay) */}
-        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-[100px] pointer-events-none z-0" />
-        <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none z-0" />
+        {/* <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-[100px] pointer-events-none z-0" />
+        <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none z-0" /> */}
 
         {/* Background Decor: Grid Pattern */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-soft-light pointer-events-none z-0"></div>

@@ -224,7 +224,7 @@ export default function OtherServices({ data, readyData }: any) {
               />
               {/* Dark Overlay because text is white. 
                   Adjust 'bg-black/80' to 'bg-black/60' if you want image to be brighter. */}
-              <div className="absolute inset-0 bg-black/80" />
+              <div className="absolute inset-0 bg-black/70" />
             </div>
 
             {/* Background Decor: Red Glows (Kept, but on top of image/overlay) */}
