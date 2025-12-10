@@ -53,21 +53,21 @@ export default function CTASectionTwo() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            {/* Primary Button - Linked to Contact */}
+            {/* Primary Button */}
             <Link
-              href="/contact"
-              className="group relative inline-flex items-center justify-center bg-white text-black border border-gray-300 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:-translate-y-1"
+              href={"/contact"}
+              className="group relative inline-flex items-center justify-center bg-transparent text-white border border-red-600 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] cursor-pointer hover:-translate-y-1"
             >
-              <span className="mr-2">Get Your Quote</span>
+              <span className="mr-2">{"Get Your Quote"}</span>
               <BsArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
-            {/* Secondary Button - Linked to Contact */}
+            {/* Secondary Button */}
             <Link
-              href="/contact"
-              className="group inline-flex items-center justify-center bg-transparent border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-white/10 hover:border-white/40"
+              href={"/contact"}
+              className="group inline-flex items-center justify-center bg-transparent border border-white/50 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-white hover:text-black cursor-pointer hover:border-white/40"
             >
-              <BsTelephone className="w-5 h-5 mr-2 text-gray-400 group-hover:text-white transition-colors" />
+              <BsTelephone className="w-5 h-5 mr-2 text-gray-400 group-hover:text-black transition-colors" />
               <span>Contact Us</span>
             </Link>
           </div>

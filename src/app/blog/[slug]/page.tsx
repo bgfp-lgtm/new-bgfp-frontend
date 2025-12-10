@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import CTASection from "@/components/CTASection";
 import Image from "next/image";
+import CTASectionTwo from "@/components/CTASectionTwo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -138,10 +139,10 @@ export default async function BlogDetailPage({ params }: Props) {
             </div>
           </div>
         </div>
+        <CTASectionTwo />
       </div>
 
       {/* CTA Section */}
-      <CTASection data={cta} />
     </div>
   );
 }
