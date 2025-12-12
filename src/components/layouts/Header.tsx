@@ -90,7 +90,8 @@ export default function Header({ data }: HeaderProps) {
 
   return (
     <header
-      className={`sticky top-0 w-full z-50 transition-all duration-500 ${headerBackgroundClass}`}
+      // Added max-w-[100vw] to ensure it never exceeds viewport width
+      className={`sticky top-0 w-full max-w-[100vw] z-50 transition-all duration-500 ${headerBackgroundClass}`}
     >
       <div className="flex items-center justify-between px-4 sm:px-8 lg:px-20 py-5">
         <Link href="/" passHref onClick={closeMenu}>
@@ -181,16 +182,12 @@ export default function Header({ data }: HeaderProps) {
           ))}
         </nav>
 
-        {/* CTA Button (DESKTOP - UPDATED) */}
+        {/* CTA Button (DESKTOP) */}
         {data?.cta && (
           <Link
             href={data.cta.path}
             className="hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold uppercase tracking-widest text-xs transition-all duration-300 group
-            
-            /* Inactive State: Transparent BG, Red Border, WHITE TEXT */
             bg-transparent border border-red-600 text-white 
-            
-            /* Active/Hover State: Filled Red, White Text */
             hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
           >
             <span>{data.cta.name}</span>
@@ -213,9 +210,10 @@ export default function Header({ data }: HeaderProps) {
       </div>
 
       {/* --- MOBILE MENU OVERLAY --- */}
+      {/* Fix: Added 'invisible' when closed to prevent horizontal scrollbar from off-screen element */}
       <div
-        className={`fixed inset-0 z-40 bg-white transform transition-transform duration-300 ease-in-out lg:hidden ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-0 z-40 bg-white w-[100vw] transform transition-transform duration-300 ease-in-out lg:hidden ${
+          isMenuOpen ? "translate-x-0 visible" : "translate-x-full invisible"
         }`}
       >
         <div className="flex flex-col items-center justify-center h-full w-full px-6 overflow-y-auto">
@@ -304,16 +302,13 @@ export default function Header({ data }: HeaderProps) {
               </div>
             ))}
 
-            {/* CTA Button (MOBILE - UPDATED) */}
+            {/* CTA Button (MOBILE) */}
             {data?.cta && (
               <Link
                 href={data.cta.path}
                 onClick={closeMenu}
                 className="mt-6 group inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300
-                
-                /* Mobile: Filled Red to ensure White Text is visible on White BG */
                 bg-red-600 text-white shadow-lg
-                
                 hover:bg-red-700 hover:shadow-xl hover:-translate-y-1"
               >
                 <span>{data.cta.name}</span>

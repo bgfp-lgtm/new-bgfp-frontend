@@ -46,15 +46,15 @@ export default async function Home() {
   const cta = globalresponse?.data?.cta[0];
 
   return (
-    <div>
+    // FIX: Added 'overflow-x-hidden' to the main wrapper to prevent horizontal scrollbars
+    // caused by animations or off-screen elements.
+    <div className="w-full overflow-x-hidden">
       <HeroSection data={herosection} />
       <IntroSection data={introSection} />
       <OurBrandsLogos data={collaborations} />
       <Services data={services} />
       <CinematicCarousel projects={projects} />
       <OtherServices data={otherServices} readyData={ready} />
-
-      {/* Replaced ProjectPage with CinematicCarousel */}
 
       <CustomerTestimonials data={testimonials} />
       <Loop data={collaborations} />

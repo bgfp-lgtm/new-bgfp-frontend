@@ -44,7 +44,9 @@ export default async function RootLayout({
           `}
         </Script>
         {/* --- END OF GOOGLE TAGS --- */}
-        <Header data={headerData} />
+        <div className="overflow-x-hidden">
+          <Header data={headerData} />
+        </div>
         {children}
         <Footer />
         <WhatsAppButton />
