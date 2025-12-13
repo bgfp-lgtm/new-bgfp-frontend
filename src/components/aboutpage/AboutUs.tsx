@@ -31,7 +31,8 @@ const SafeImage = ({
       alt={alt}
       width={width}
       height={height}
-      className={`object-cover ${className}`}
+      // Ensure base classes are present along with passed className
+      className={`object-cover ${className || ""}`}
     />
   );
 };
@@ -108,17 +109,11 @@ export default function AboutUs({
               >
                 {herosectionData?.description}
               </motion.p>
-
-              {/* <div className="flex items-center gap-4 text-white/60 text-xs font-mono uppercase tracking-widest">
-              <span>Scroll to Explore</span>
-              <div className="h-px w-12 bg-white/40"></div>
-            </div> */}
             </div>
           </div>
         </section>
 
         {/* --- MAIN CONTENT WRAPPER --- */}
-        {/* UPDATED: Removed large py-16/py-24 padding here to allow sections to control their own spacing consistently */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -126,7 +121,6 @@ export default function AboutUs({
           className="w-full"
         >
           {/* --- SECTION 1: WHAT IS BGFP --- */}
-          {/* UPDATED: Added py-10 to match homepage components */}
           <section className="w-full py-10 px-6 md:px-12 max-w-[1400px] mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -224,7 +218,6 @@ export default function AboutUs({
           </section>
 
           {/* --- SECTION 2: WHY CHOOSE US --- */}
-          {/* UPDATED: Added py-10, removed mb-32 */}
           <section className="w-full py-8 px-6 md:px-12 max-w-[1400px] mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -286,7 +279,6 @@ export default function AboutUs({
           </section>
 
           {/* --- SECTION 3: MEMBERS --- */}
-          {/* UPDATED: Added py-10, removed mb-32 */}
           <section className="w-full py-10 px-6 md:px-12 max-w-[1400px] mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -321,12 +313,13 @@ export default function AboutUs({
                             : "aspect-[4/5] md:aspect-[6/7]"
                         } overflow-hidden rounded-2xl shadow-2xl transition-all duration-300`}
                       >
+                        {/* FIX: Added object-top to ensure the top of the image (where logos usually are) is not cropped */}
                         <SafeImage
                           url={member.image?.url}
                           alt={`${member.name}`}
                           width={800}
                           height={1000}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover object-top transition-transform duration-700"
                         />
                         {/* Gradient Overlay for Texture */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
