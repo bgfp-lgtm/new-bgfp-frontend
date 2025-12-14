@@ -55,7 +55,6 @@ export default async function Home() {
       <Services data={services} />
       <CinematicCarousel projects={projects} />
       <OtherServices data={otherServices} readyData={ready} />
-
       <CustomerTestimonials data={testimonials} />
       <Loop data={collaborations} />
       <CTASection data={cta} />
