@@ -107,14 +107,13 @@ export default function Services({ data }: any) {
                     <div className="mt-6 pointer-events-auto">
                       <Link
                         href={card.link?.path || "#"}
-                        className="..."
-                        // Add this line to give context to screen readers/bots
+                        className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-red-600/30"
                         aria-label={`Learn more about ${card.title}`}
                       >
                         <span className="mr-2">
                           {card.link?.name || "Learn More"}
                         </span>
-                        <BsArrowRight />
+                        <BsArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
                       </Link>
                     </div>
                   </div>
