@@ -34,7 +34,7 @@ export default function Services({ data }: any) {
           >
             What We Do
           </motion.h2>
-          <motion.h1
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -42,7 +42,7 @@ export default function Services({ data }: any) {
             className="text-4xl md:text-6xl font-bold text-gray-900"
           >
             {data.title || "Our Services"}
-          </motion.h1>
+          </motion.h2>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -105,15 +105,17 @@ export default function Services({ data }: any) {
                     {/* Call to Action Button - RED PILL */}
                     {/* Added 'mt-6' to give breathing room between text and button */}
                     <div className="mt-6 pointer-events-auto">
-                      <Link 
-  href={card.link?.path || "#"} 
-  className="..."
-  // Add this line to give context to screen readers/bots
-  aria-label={`Learn more about ${card.title}`} 
->
-  <span className="mr-2">{card.link?.name || "Learn More"}</span>
-  <BsArrowRight ... />
-</Link>
+                      <Link
+                        href={card.link?.path || "#"}
+                        className="..."
+                        // Add this line to give context to screen readers/bots
+                        aria-label={`Learn more about ${card.title}`}
+                      >
+                        <span className="mr-2">
+                          {card.link?.name || "Learn More"}
+                        </span>
+                        <BsArrowRight />
+                      </Link>
                     </div>
                   </div>
                 </div>
