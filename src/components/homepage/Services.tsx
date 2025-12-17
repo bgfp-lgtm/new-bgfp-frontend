@@ -105,15 +105,15 @@ export default function Services({ data }: any) {
                     {/* Call to Action Button - RED PILL */}
                     {/* Added 'mt-6' to give breathing room between text and button */}
                     <div className="mt-6 pointer-events-auto">
-                      <Link
-                        href={card.link?.path || "#"}
-                        className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-red-600/30"
-                      >
-                        <span className="mr-2">
-                          {card.link?.name || "Learn More"}
-                        </span>
-                        <BsArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
-                      </Link>
+                      <Link 
+  href={card.link?.path || "#"} 
+  className="..."
+  // Add this line to give context to screen readers/bots
+  aria-label={`Learn more about ${card.title}`} 
+>
+  <span className="mr-2">{card.link?.name || "Learn More"}</span>
+  <BsArrowRight ... />
+</Link>
                     </div>
                   </div>
                 </div>
