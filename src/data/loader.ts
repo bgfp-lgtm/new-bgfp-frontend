@@ -51,6 +51,7 @@ export async function getBlogBySlug(slug: string) {
 
 const projectQuery = () =>
   qs.stringify({
+    sort: ["createdAt:desc"],
     populate: {
       image: {
         fields: ["url", "name"],
