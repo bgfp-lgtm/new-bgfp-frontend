@@ -74,7 +74,7 @@ export default function CustomerTestimonials({ data }: any) {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="relative  w-full"
+          className="relative w-full"
         >
           <Carousel
             setApi={setApi}
@@ -84,10 +84,8 @@ export default function CustomerTestimonials({ data }: any) {
               loop: true,
             }}
             className="w-full mx-auto"
-            // --- FIX IS HERE: Use arrow functions to ignore the event object ---
             onMouseEnter={() => plugin.current.stop()}
             onMouseLeave={() => plugin.current.play()}
-            // ------------------------------------------------------------------
           >
             <CarouselContent className="-ml-4 py-6">
               {data.testimonials.map((testimonial: any, index: number) => (
@@ -96,15 +94,16 @@ export default function CustomerTestimonials({ data }: any) {
                   className="pl-4 md:basis-1/2"
                 >
                   <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden h-full flex flex-col md:flex-row hover:shadow-lg transition-shadow duration-300">
-                    {/* Image Section */}
+                    {/* Image Section - UPDATED HERE */}
                     {testimonial.image?.url && (
-                      <div className="relative h-64 w-full md:h-auto md:w-2/5 shrink-0 overflow-hidden">
+                      <div className="relative h-96 w-full md:h-auto md:w-2/5 shrink-0 overflow-hidden">
                         <Image
                           width={400}
                           height={400}
                           src={testimonial.image.url}
                           alt={`${testimonial.name}`}
-                          className="w-full h-full object-top lg:object-cover transition-transform duration-500 hover:scale-105"
+                          // Changed 'lg:object-cover' to just 'object-cover' to ensure it looks good on mobile too
+                          className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
                         />
                       </div>
                     )}
