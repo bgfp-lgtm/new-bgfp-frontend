@@ -309,14 +309,14 @@ export default function ContactPage({ cta }: { cta: any }) {
       {/* --- NEW: MAP SECTION --- */}
       <section className="w-full h-[50vh] min-h-[400px] relative bg-zinc-100 overflow-hidden group p-10 mt-10 ">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19859.6385288764!2d-0.03525286520666015!3d51.50495392663673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487602b9e6e44c29%3A0x621578336338e55e!2sCanary%20Wharf%2C%20London%2C%20UK!5e0!3m2!1sen!2sin!4v1709730000000!5m2!1sen!2sin"
+          src="https://maps.google.com/maps?q=Seymour%20Road%20London,%20UK%20N8%200BH&t=&z=15&ie=UTF8&iwloc=&output=embed"
           width="100%"
           height="100%"
           style={{ border: 0 }}
           allowFullScreen={true}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          className="w-full h-full object-cover grayscale invert-[.05] transition-all duration-700 rounded-2xl ease-in-out group-hover:grayscale-0 group-hover:invert-0"
+          className="w-full h-full object-cover transition-all duration-700 rounded-2xl "
         ></iframe>
 
         {/* Optional: Overlay Text/Badge */}

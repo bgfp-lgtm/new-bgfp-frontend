@@ -112,7 +112,7 @@ const ContactModal = ({
                     Contact Info
                   </p>
                   <p className="text-gray-800 font-medium text-sm">
-                    birthgiverfilmproductions@gmail.com
+                    bgfp@birthgiverfilmproduction.com
                   </p>
                   <p className="text-gray-800 font-medium text-sm mt-1">
                     +44 7776 842718
