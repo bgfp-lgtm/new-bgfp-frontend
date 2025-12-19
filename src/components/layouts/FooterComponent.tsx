@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronRight, Send } from "lucide-react";
+import React, { useState } from "react";
+import { Send } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { BsInstagram, BsLinkedin, BsTiktok } from "react-icons/bs";
@@ -9,6 +10,46 @@ import Image from "next/image";
 export default function FooterComponent({ data }: any) {
   // Map social icons to the component array
   const icons = [BsInstagram, BsLinkedin, BsTiktok];
+
+  // --- Form State ---
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    try {
+      setStatus("submitting");
+
+      // Your provided Google Apps Script URL
+      const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbz_le-IdpRryQJHTL7TTl0aXRp5O3Zj0mD7y8vDa5R1kyB9PH5KzrAhxnu7ZCk3xDIGlg/exec";
+
+      // Send data to the script
+      // We include 'type: "newsletter"' so your script knows to put this in Sheet2
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          type: "newsletter",
+        }),
+      });
+
+      setStatus("success");
+      setEmail("");
+
+      // Reset status to idle after 3 seconds so the user can see the button again if needed
+      setTimeout(() => setStatus("idle"), 3000);
+    } catch (error) {
+      console.error("Error:", error);
+      setStatus("error");
+    }
+  };
 
   return (
     <motion.footer
@@ -55,7 +96,7 @@ export default function FooterComponent({ data }: any) {
             {/* Social Icons */}
             <div className="flex items-center gap-4">
               {data?.socials?.map((social: any, index: number) => {
-                const IconComponent = icons[index];
+                const IconComponent = icons[index] || BsInstagram;
                 return (
                   <Link
                     key={social.id}
@@ -125,22 +166,44 @@ export default function FooterComponent({ data }: any) {
                 {data?.loop?.description}
               </p>
 
-              <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 <div className="relative">
                   <input
                     type="email"
                     required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     aria-label="Email address"
                     placeholder="Your email address"
                     className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-sm text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500/50 transition-all"
                   />
                 </div>
+
                 <button
                   type="submit"
-                  className="w-full rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-3 transition-all shadow-lg shadow-red-900/20 hover:shadow-red-900/40 flex items-center justify-center gap-2 group"
+                  disabled={status === "submitting" || status === "success"}
+                  className={`w-full rounded-xl font-semibold text-sm py-3 transition-all flex items-center justify-center gap-2 group
+                    ${
+                      status === "success"
+                        ? "bg-green-600 text-white"
+                        : status === "error"
+                        ? "bg-red-800 text-white"
+                        : "bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/20 hover:shadow-red-900/40"
+                    }
+                  `}
                 >
-                  Subscribe
-                  <Send className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  {status === "submitting" ? (
+                    "Subscribing..."
+                  ) : status === "success" ? (
+                    "Subscribed!"
+                  ) : status === "error" ? (
+                    "Try Again"
+                  ) : (
+                    <>
+                      Subscribe
+                      <Send className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </button>
               </form>
 
@@ -155,7 +218,7 @@ export default function FooterComponent({ data }: any) {
 
         {/* Bottom Section: Locations & Copyright */}
         <div className="mt-6 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 text-xs text-neutral-500">
-          {/* We Work With - Horizontal List now */}
+          {/* We Work With - Horizontal List */}
           <div className="flex flex-wrap items-center gap-x-2">
             <span className="text-neutral-300 font-semibold">We work in:</span>
             {data?.workWith?.map((location: any, index: number) => (
