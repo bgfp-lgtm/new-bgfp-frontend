@@ -2,11 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import CTASection from "@/components/CTASection";
 import { FaArrowRight, FaPaperPlane, FaChevronDown } from "react-icons/fa";
-import CTASectionTwo from "@/components/CTASectionTwo";
 
-export default function ContactPage({ cta }: { cta: any }) {
+export default function ContactPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -31,13 +29,33 @@ export default function ContactPage({ cta }: { cta: any }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 1. Basic Validation
     if (!form.name || !form.email || !form.message || !form.inquiryType) {
       setStatus("error");
       return;
     }
+
     try {
       setStatus("submitting");
-      await new Promise((r) => setTimeout(r, 1500));
+
+      // 2. Your Specific Google Apps Script URL
+      const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbz_le-IdpRryQJHTL7TTl0aXRp5O3Zj0mD7y8vDa5R1kyB9PH5KzrAhxnu7ZCk3xDIGlg/exec";
+
+      // 3. Send data using fetch
+      // Note: 'no-cors' is used because Google Apps Script
+      // redirects the request, which browsers block by default.
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      // 4. Update UI Status and Reset Form
       setStatus("success");
       setForm({
         name: "",
@@ -46,7 +64,8 @@ export default function ContactPage({ cta }: { cta: any }) {
         inquiryType: "",
         message: "",
       });
-    } catch {
+    } catch (error) {
+      console.error("Submission error:", error);
       setStatus("error");
     }
   };
@@ -59,8 +78,7 @@ export default function ContactPage({ cta }: { cta: any }) {
         <div className="relative p-6 md:p-12 lg:p-24 flex flex-col justify-between h-fit lg:h-screen lg:sticky lg:top-0 border-r border-gray-100">
           {/* Header */}
           <div className="space-y-8">
-            <div className="w-12 h-1 bg-red-600"></div>{" "}
-            {/* Brand Accent Line */}
+            <div className="w-12 h-1 bg-red-600"></div>
             <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9]">
               Let's build <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-500">
@@ -80,7 +98,7 @@ export default function ContactPage({ cta }: { cta: any }) {
                 Direct Inquiry
               </label>
               <Link
-                href="mailto:birthgiverfilmproductions@gmail.com"
+                href="mailto:bgfp@birthgiverfilmproduction.com"
                 className="block text-xl md:text-3xl font-bold hover:text-red-600 transition-colors duration-300 break-all leading-tight"
               >
                 bgfp@birthgiverfilmproduction.com
@@ -236,7 +254,6 @@ export default function ContactPage({ cta }: { cta: any }) {
                   <option value="Film Production">Film Production</option>
                   <option value="Marketing">Marketing</option>
                 </select>
-                {/* Custom Chevron for style consistency */}
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-red-600">
                   <FaChevronDown size={20} />
                 </div>
@@ -306,23 +323,21 @@ export default function ContactPage({ cta }: { cta: any }) {
         </div>
       </div>
 
-      {/* --- NEW: MAP SECTION --- */}
-      <section className="w-full h-[50vh] min-h-[400px] relative bg-zinc-100 overflow-hidden group p-10 mt-10 ">
+      {/* Map Section */}
+      <section className="w-full h-[50vh] min-h-[400px] relative bg-zinc-100 overflow-hidden group p-10 mt-10">
         <iframe
-          src="https://maps.google.com/maps?q=Seymour%20Road%20London,%20UK%20N8%200BH&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2479.231221193306!2d-0.12267682337651047!3d51.582315771832815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b947c49b085%3A0xc3f58a36916578a1!2sSeymour%20Rd%2C%20London%20N8%200BH%2C%20UK!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
           width="100%"
           height="100%"
           style={{ border: 0 }}
           allowFullScreen={true}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          className="w-full h-full object-cover transition-all duration-700 rounded-2xl "
+          className="w-full h-full object-cover transition-all duration-700 rounded-2xl"
         ></iframe>
-
-        {/* Optional: Overlay Text/Badge */}
       </section>
 
-      <CTASectionTwo />
+      {/* <CTASectionTwo /> */}
     </main>
   );
 }
