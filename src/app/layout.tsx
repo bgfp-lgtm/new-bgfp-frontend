@@ -10,7 +10,7 @@ import { DM_Sans } from "next/font/google";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  display: "swap", // <--- Add this line
+  display: "swap",
   variable: "--font-dm-sans",
 });
 
@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   title: "Birthgiver Film Productions",
   description:
     "Birthgiver Film Productions offers comprehensive film and video production services",
+  // Add the icons property here to point to your SVG in the public folder
+  icons: {
+    icon: "/logofav.png",
+  },
 };
 
 export default async function RootLayout({
@@ -31,7 +35,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased ${dmSans.className}`}>
-        {/* --- 2. ADD YOUR GOOGLE TAGS HERE --- */}
         <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-Z05REZD9HS"
@@ -44,7 +47,6 @@ export default async function RootLayout({
             gtag('config', 'G-Z05REZD9HS');
           `}
         </Script>
-        {/* --- END OF GOOGLE TAGS --- */}
         <div className="overflow-x-hidden lg:overflow-x-visible">
           <Header data={headerData} />
         </div>
