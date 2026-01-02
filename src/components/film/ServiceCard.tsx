@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { FaArrowRight, FaTimes } from "react-icons/fa";
+import { FaArrowRight, FaTimes, FaPaperPlane } from "react-icons/fa";
 
 export default function ServiceCard({
   service,
@@ -13,6 +13,19 @@ export default function ServiceCard({
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Form State
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    inquiryType: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+
   // Prevent scrolling when modal is open
   const toggleModal = (state: boolean) => {
     setIsModalOpen(state);
@@ -20,6 +33,57 @@ export default function ServiceCard({
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
+      setStatus("idle"); // Reset status on close
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic Validation
+    if (!form.name || !form.email || !form.message || !form.inquiryType) {
+      setStatus("error");
+      return;
+    }
+
+    try {
+      setStatus("submitting");
+
+      const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbz_le-IdpRryQJHTL7TTl0aXRp5O3Zj0mD7y8vDa5R1kyB9PH5KzrAhxnu7ZCk3xDIGlg/exec";
+
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      setStatus("success");
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        inquiryType: "",
+        message: "",
+      });
+
+      // Optional: Close modal automatically after success
+      setTimeout(() => toggleModal(false), 2000);
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus("error");
     }
   };
 
@@ -91,14 +155,18 @@ export default function ServiceCard({
               </h3>
             </div>
 
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-xs font-bold uppercase text-zinc-500 mb-2">
                   Name
                 </label>
                 <input
                   type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
                   placeholder="Your Name"
+                  required
                   className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all"
                 />
               </div>
@@ -109,7 +177,11 @@ export default function ServiceCard({
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
                   placeholder="hello@company.com"
+                  required
                   className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all"
                 />
               </div>
@@ -120,6 +192,9 @@ export default function ServiceCard({
                 </label>
                 <input
                   type="tel"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
                   placeholder="Your Phone Number"
                   className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all"
                 />
@@ -131,8 +206,11 @@ export default function ServiceCard({
                 </label>
                 <div className="relative">
                   <select
+                    name="inquiryType"
+                    value={form.inquiryType}
+                    onChange={handleChange}
+                    required
                     className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all appearance-none cursor-pointer"
-                    defaultValue=""
                   >
                     <option value="" disabled>
                       Select an Option
@@ -166,6 +244,10 @@ export default function ServiceCard({
                   Project Details
                 </label>
                 <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
+                  required
                   rows={4}
                   placeholder="Tell us about your project..."
                   className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all resize-none"
@@ -175,6 +257,7 @@ export default function ServiceCard({
               {/* --- UPDATED SUBMIT BUTTON --- */}
               <button
                 type="submit"
+                disabled={status === "submitting"}
                 className="group/submit flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300 mt-4 
                 
                 /* Inactive State (Ghost) */
@@ -183,9 +266,25 @@ export default function ServiceCard({
                 /* Hover State (Filled & Animated) */
                 hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
               >
-                <span>Send Request</span>
-                <FaArrowRight className="transition-transform duration-300 group-hover/submit:translate-x-1" />
+                <span>
+                  {status === "submitting"
+                    ? "Sending..."
+                    : status === "success"
+                    ? "Message Sent!"
+                    : "Send Request"}
+                </span>
+                {status === "success" ? (
+                  <FaPaperPlane />
+                ) : (
+                  <FaArrowRight className="transition-transform duration-300 group-hover/submit:translate-x-1" />
+                )}
               </button>
+
+              {status === "error" && (
+                <p className="mt-2 text-red-600 text-center text-xs font-bold uppercase tracking-widest">
+                  * Please fill out all required fields.
+                </p>
+              )}
             </form>
           </div>
         </div>
