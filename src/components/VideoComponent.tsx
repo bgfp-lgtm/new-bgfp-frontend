@@ -16,6 +16,7 @@ export default function VideoComponent({ url, poster }: Props) {
         poster={poster}
         className="w-full h-full object-cover"
         preload="auto"
+        aria-hidden="true"
       >
         <source src={url} />
       </video>
