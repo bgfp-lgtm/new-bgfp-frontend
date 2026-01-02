@@ -335,7 +335,6 @@ const pageBySlugQuery = (slug: string) =>
                   image: {
                     fields: ["url", "name"],
                   },
-                  seo: { populate: "*" },
                 },
               },
             },
