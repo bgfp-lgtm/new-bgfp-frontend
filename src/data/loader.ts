@@ -94,6 +94,7 @@ const homepageQuery = () =>
             populate: {
               cards: {
                 populate: {
+                  seo: { populate: "*" },
                   image: {
                     fields: ["url", "name"],
                   },
@@ -202,6 +203,9 @@ const pageBySlugQuery = (slug: string) =>
             populate: {
               services: {
                 populate: {
+                  seo: {
+                    populate: "*",
+                  },
                   image: {
                     fields: ["url", "name"],
                   },
@@ -331,6 +335,7 @@ const pageBySlugQuery = (slug: string) =>
                   image: {
                     fields: ["url", "name"],
                   },
+                  seo: { populate: "*" },
                 },
               },
             },
