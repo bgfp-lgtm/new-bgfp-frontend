@@ -1,10 +1,13 @@
+// src/app/layout.tsx
+
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import Script from "next/script";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { getGlobalData } from "@/data/loader";
+import { getGlobalData, getHomepageQuery } from "@/data/loader"; // Import getHomepageData
+import { getStrapiMedia } from "@/lib/utils"; // Import for URL formatting
 
 import { DM_Sans } from "next/font/google";
 
@@ -14,15 +17,52 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
 });
 
-export const metadata: Metadata = {
-  title: "Birthgiver Film Productions",
-  description:
-    "Birthgiver Film Productions offers comprehensive film and video production services",
-  // Add the icons property here to point to your SVG in the public folder
-  icons: {
-    icon: "/logofav.png",
-  },
-};
+// Dynamic metadata generation
+export async function generateMetadata(): Promise<Metadata> {
+  const homepage = await getHomepageQuery();
+  const seo = homepage?.data?.seo;
+
+  // Find the social network image or fallback to a default logo path
+  const ogImage = seo?.socialNetwork?.[0]?.image?.url
+    ? getStrapiMedia(seo.socialNetwork[0].image.url)
+    : "/logofav.png"; // Fallback to your local logo
+
+  return {
+    title: seo?.metaTitle || "Birthgiver Film Productions",
+    description:
+      seo?.metaDescription ||
+      "Comprehensive film and video production services",
+    keywords: seo?.keywords,
+    robots: seo?.metaRobots || "index, follow",
+    alternates: {
+      canonical: seo?.canonicalURL,
+    },
+    icons: {
+      icon: "/logofav.png",
+    },
+    openGraph: {
+      title: seo?.socialNetwork?.[0]?.title || seo?.metaTitle,
+      description: seo?.socialNetwork?.[0]?.description || seo?.metaDescription,
+      url: seo?.canonicalURL || "https://yourdomain.com",
+      siteName: "Birthgiver Film Productions",
+      images: [
+        {
+          url: ogImage || "",
+          width: 1200,
+          height: 630,
+          alt: seo?.metaTitle,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo?.metaTitle,
+      description: seo?.metaDescription,
+      images: [ogImage || ""],
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -35,18 +75,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased ${dmSans.className}`}>
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-Z05REZD9HS"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-Z05REZD9HS');
-          `}
-        </Script>
+        {/* ... (keep your existing Scripts and layout structure) */}
         <div className="overflow-x-hidden lg:overflow-x-visible">
           <Header data={headerData} />
         </div>
