@@ -75,6 +75,17 @@ export async function getProject() {
 const homepageQuery = () =>
   qs.stringify({
     populate: {
+      seo: {
+        populate: {
+          socialNetwork: {
+            populate: {
+              image: {
+                fields: ["url", "name"],
+              },
+            },
+          },
+        },
+      },
       blocks: {
         on: {
           "blocks.hero-section": {
