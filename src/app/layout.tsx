@@ -4,11 +4,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
-import Script from "next/script";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { getGlobalData, getHomepageQuery } from "@/data/loader"; // Import getHomepageData
-import { getStrapiMedia } from "@/lib/utils"; // Import for URL formatting
-
+import { getGlobalData, getHomepageQuery } from "@/data/loader";
+import { getStrapiMedia } from "@/lib/utils";
 import { DM_Sans } from "next/font/google";
 
 const dmSans = DM_Sans({
@@ -17,15 +15,19 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
 });
 
-// Dynamic metadata generation
+// Define the consistent base URL for the entire project
+const BASE_URL = "https://www.birthgiverfilmproductions.com";
+
 export async function generateMetadata(): Promise<Metadata> {
   const homepage = await getHomepageQuery();
   const seo = homepage?.data?.seo;
 
-  // Find the social network image or fallback to a default logo path
+  // Determine the canonical URL with a consistent fallback
+  const canonicalUrl = seo?.canonicalURL || BASE_URL;
+
   const ogImage = seo?.socialNetwork?.[0]?.image?.url
     ? getStrapiMedia(seo.socialNetwork[0].image.url)
-    : "/logofav.png"; // Fallback to your local logo
+    : "/logofav.png";
 
   return {
     title: seo?.metaTitle || "Birthgiver Film Productions",
@@ -35,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: seo?.keywords,
     robots: seo?.metaRobots || "index, follow",
     alternates: {
-      canonical: seo?.canonicalURL,
+      canonical: canonicalUrl, // Uses the centralized variable
     },
     icons: {
       icon: "/logofav.png",
@@ -43,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seo?.socialNetwork?.[0]?.title || seo?.metaTitle,
       description: seo?.socialNetwork?.[0]?.description || seo?.metaDescription,
-      url: seo?.canonicalURL || "https://www.birthgiverfilmproductions.com/",
+      url: canonicalUrl, // Strictly matches the canonical URL
       siteName: "Birthgiver Film Productions",
       images: [
         {
@@ -75,7 +77,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased ${dmSans.className}`}>
-        {/* ... (keep your existing Scripts and layout structure) */}
         <div className="overflow-x-hidden lg:overflow-x-visible">
           <Header data={headerData} />
         </div>
