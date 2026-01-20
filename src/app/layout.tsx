@@ -43,11 +43,11 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seo?.socialNetwork?.[0]?.title || seo?.metaTitle,
       description: seo?.socialNetwork?.[0]?.description || seo?.metaDescription,
-      url: seo?.canonicalURL || "https://yourdomain.com",
+      url: seo?.canonicalURL || "https://www.birthgiverfilmproductions.com/",
       siteName: "Birthgiver Film Productions",
       images: [
         {
-          url: ogImage || "",
+          url: ogImage || "/logofav.png",
           width: 1200,
           height: 630,
           alt: seo?.metaTitle,
