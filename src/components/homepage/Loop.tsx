@@ -71,6 +71,8 @@ export default function Loop({ data }: any) {
       src: getStrapiMedia(brand.url), // Use the util
       alt: brand.name,
       title: brand.name,
+      width: brand.width || 120,
+      height: brand.height || 45,
     })) || [];
 
   const colors = [

@@ -15,7 +15,7 @@ export default function VideoComponent({ url, poster }: Props) {
         playsInline
         poster={poster}
         className="w-full h-full object-cover"
-        preload="auto"
+        preload="none"
         aria-hidden="true"
       >
         <source src={url} />

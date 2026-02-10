@@ -1,13 +1,10 @@
-import CTASection from "@/components/CTASection";
-import CustomerTestimonials from "@/components/homepage/CustomerTestimonials";
 import HeroSection from "@/components/homepage/HeroSection";
 import IntroSection from "@/components/homepage/IntroSection";
-import Loop from "@/components/homepage/Loop";
-import OtherServices from "@/components/homepage/OtherServices";
 import Services from "@/components/homepage/Services";
-import CinematicCarousel from "@/components/film/CinematicCarousel"; // Import the carousel
+import CinematicCarousel from "@/components/film/CinematicCarousel";
 import { getGlobalData, getHomepageQuery, getProject } from "@/data/loader";
 import OurBrandsLogos from "@/components/OurBrandsLogos";
+import BelowTheFold from "@/components/homepage/BelowTheFold";
 
 export default async function Home() {
   const response = await getHomepageQuery();
@@ -54,10 +51,13 @@ export default async function Home() {
       <OurBrandsLogos data={collaborations} />
       <Services data={services} />
       <CinematicCarousel projects={projects} />
-      <OtherServices data={otherServices} readyData={ready} />
-      <CustomerTestimonials data={testimonials} />
-      <Loop data={collaborations} />
-      <CTASection data={cta} />
+      <BelowTheFold
+        otherServices={otherServices}
+        readyData={ready}
+        testimonials={testimonials}
+        collaborations={collaborations}
+        cta={cta}
+      />
     </div>
   );
 }

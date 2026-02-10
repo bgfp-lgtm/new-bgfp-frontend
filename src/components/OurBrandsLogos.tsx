@@ -7,6 +7,8 @@ export default function OurBrandsLogos({ data }: any) {
       src: getStrapiMedia(brand.url), // Use the util
       alt: brand.name,
       title: brand.name,
+      width: brand.width || 120,
+      height: brand.height || 45,
     })) || [];
   return (
     <div className="relative mt-16">

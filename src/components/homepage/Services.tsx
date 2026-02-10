@@ -74,6 +74,7 @@ export default function Services({ data }: any) {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110 hover:opacity-20"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={index < 2}
                   />
                   {/* Overlay Gradient */}
                   <div className="absolute inset-0 bg-linear-to-t from-black/95 hover:backdrop-blur-md via-black/70 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />

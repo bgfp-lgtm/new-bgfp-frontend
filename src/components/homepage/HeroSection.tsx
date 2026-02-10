@@ -33,7 +33,7 @@ export default function HeroSection({ data }: any) {
     <div className="h-[90vh] lg:h-screen w-full relative overflow-hidden bg-black">
       {/* Background Video */}
       <div className="absolute inset-0 z-0">
-        <VideoComponent url={data?.video?.url} />
+        <VideoComponent url={data?.video?.url} poster={data?.poster?.url || data?.video?.previewUrl || "/hero-poster.webp"} />
       </div>
 
       {/* Cinematic Gradient Overlay */}
