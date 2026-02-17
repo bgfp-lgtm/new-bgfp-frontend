@@ -2,22 +2,21 @@
 
 import dynamic from "next/dynamic";
 
-// Lazy-load below-the-fold components to reduce initial JS bundle
+// Lazy-load below-the-fold components to reduce initial JS bundle.
+// SSR is enabled (default) so the server pre-renders HTML and the browser
+// only needs to hydrate (attach listeners), avoiding a "mount-from-scratch"
+// spike on mobile CPUs.
 const CustomerTestimonials = dynamic(
     () => import("@/components/homepage/CustomerTestimonials"),
-    { ssr: false }
 );
 const Loop = dynamic(
     () => import("@/components/homepage/Loop"),
-    { ssr: false }
 );
 const OtherServices = dynamic(
     () => import("@/components/homepage/OtherServices"),
-    { ssr: false }
 );
 const CTASection = dynamic(
     () => import("@/components/CTASection"),
-    { ssr: false }
 );
 
 interface Props {

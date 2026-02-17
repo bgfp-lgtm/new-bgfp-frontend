@@ -5,11 +5,11 @@ import { motion, Variants } from "framer-motion";
 import VideoComponent from "../VideoComponent";
 
 export default function HeroSection({ data }: any) {
-  // FIX: Explicitly type these as 'Variants' to fix the ease array error
+  // FIX: Only animate transform (y), never opacity.
+  // The container is always visible so the <h1> paints immediately for LCP.
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
         staggerChildren: 0.25,
         delayChildren: 0.3,
@@ -24,7 +24,7 @@ export default function HeroSection({ data }: any) {
       y: 0,
       transition: {
         duration: 1,
-        ease: [0.16, 1, 0.3, 1], // TypeScript now accepts this cubic-bezier
+        ease: [0.16, 1, 0.3, 1],
       },
     },
   };
@@ -37,10 +37,9 @@ export default function HeroSection({ data }: any) {
       </div>
 
       {/* Cinematic Gradient Overlay */}
-      {/* Dark floor for text, clear top for video visibility */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black z-10" />
 
-      {/* Content Container */}
+      {/* Content Container — always opacity:1 for instant LCP */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <motion.div
           variants={containerVariants}
@@ -58,7 +57,7 @@ export default function HeroSection({ data }: any) {
             </motion.span>
           )}
 
-          {/* Main Title */}
+          {/* Main Title — visible in initial HTML, only y offset animates */}
           <motion.h1
             variants={itemVariants}
             className="text-white text-5xl sm:text-7xl md:text-9xl font-black mb-6 tracking-tighter drop-shadow-xl"
@@ -76,22 +75,28 @@ export default function HeroSection({ data }: any) {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+      {/* Scroll Indicator — CSS-only infinite animation */}
+      <div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 animate-[fade-in_1s_1.5s_both]"
       >
         <span className="text-white/50 text-[10px] uppercase tracking-[0.2em]">
           Scroll
         </span>
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent"
+        <div
+          className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent animate-[scroll-bounce_2s_ease-in-out_infinite]"
         />
-      </motion.div>
+      </div>
+
+      <style jsx>{`
+        @keyframes scroll-bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(10px); }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }

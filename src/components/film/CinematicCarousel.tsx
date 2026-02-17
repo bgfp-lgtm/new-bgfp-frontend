@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { FaPlay } from "react-icons/fa";
+import { Play } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -148,7 +148,7 @@ export default function CinematicCarousel({ projects }: { projects: any[] }) {
                             /* Active/Hover State */
                             hover:bg-red-600 hover:text-white hover:shadow-lg hover:-translate-y-1"
                           >
-                            <FaPlay className="w-2 h-2 md:w-3 md:h-3" />
+                            <Play className="w-2 h-2 md:w-3 md:h-3" />
                             <span className="hidden xs:inline">Watch Now</span>
                             <span className="xs:hidden">Play</span>
                           </button>
