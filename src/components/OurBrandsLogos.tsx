@@ -1,14 +1,26 @@
 import { getStrapiMedia } from "@/lib/utils";
 import LogoLoop from "./homepage/LogoLoop";
 
+import Image from "next/image";
+
 export default function OurBrandsLogos({ data }: any) {
   const logos =
     data?.brands?.map((brand: any) => ({
-      src: getStrapiMedia(brand.url), // Use the util
-      alt: brand.name,
+      node: (
+        <Image
+          src={getStrapiMedia(brand.url) || ""}
+          alt={brand.name || "Brand Logo"}
+          width={brand.width || 120}
+          height={brand.height || 45}
+          className="h-[45px] w-auto object-contain"
+          unoptimized
+        // Logos are usually below the fold or small enough that lazy is fine, 
+        // but if they are in viewport, priority might be needed. 
+        // Given "OurBrandsLogos", it's likely further down -> lazy default is good.
+        />
+      ),
+      href: brand.url?.startsWith("http") ? brand.url : undefined, // Optional link if data has it
       title: brand.name,
-      width: brand.width || 120,
-      height: brand.height || 45,
     })) || [];
   return (
     <div className="relative mt-16">

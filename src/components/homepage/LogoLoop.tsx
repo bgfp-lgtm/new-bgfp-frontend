@@ -57,94 +57,43 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     className,
     style,
   }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    // Calculate animation duration based on a nominal sequence width
-    // Lower speed value → slower animation → longer duration
-    // We use a base width assumption; the CSS animation handles the actual 0% → -50%
-    const animationDuration = useMemo(() => {
-      const baseDuration = 1000 / Math.max(speed, 1);
-      return `${Math.max(baseDuration * 20, 5)}s`;
-    }, [speed]);
-
-    const animationDirection = direction === "right" ? "reverse" : "normal";
-
-    const handleMouseEnter = useCallback(() => {
-      if (pauseOnHover) setIsHovered(true);
-    }, [pauseOnHover]);
-
-    const handleMouseLeave = useCallback(() => {
-      if (pauseOnHover) setIsHovered(false);
-    }, [pauseOnHover]);
+    // Calculate duration based on speed (nominal).
+    // Avoid re-calculating on every render if possible, but useMemo is fine here.
+    const duration = Math.max(1000 / Math.max(speed, 1) * 20, 5);
 
     const renderLogoItem = useCallback(
       (item: LogoItem, key: React.Key) => {
         const isNodeItem = "node" in item;
-
+        // If node is provided, use it. Otherwise use img.
         const content = isNodeItem ? (
-          <span
-            className={cx(
-              "inline-flex items-center",
-              scaleOnHover &&
-              "transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
-            )}
-            aria-hidden={!!(item as any).href && !(item as any).ariaLabel}
-          >
-            {(item as any).node}
-          </span>
+          (item as any).node
         ) : (
           <img
-            className={cx(
-              "h-[var(--logoloop-logoHeight)] w-auto block object-contain",
-              "[-webkit-user-drag:none] pointer-events-none",
-              "[image-rendering:-webkit-optimize-contrast]",
-              scaleOnHover &&
-              "transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120"
-            )}
+            className="h-[var(--logoloop-logoHeight)] w-auto block object-contain pointer-events-none"
             src={(item as any).src}
-            srcSet={(item as any).srcSet}
-            sizes={(item as any).sizes}
+            alt={(item as any).alt ?? ""}
             width={(item as any).width}
             height={(item as any).height}
-            alt={(item as any).alt ?? ""}
-            title={(item as any).title}
             loading="lazy"
             decoding="async"
             draggable={false}
           />
         );
 
-        const itemAriaLabel = isNodeItem
-          ? (item as any).ariaLabel ?? (item as any).title
-          : (item as any).alt ?? (item as any).title;
-
+        // Wrap in link if needed
         const inner = (item as any).href ? (
-          <a
-            className={cx(
-              "inline-flex items-center no-underline rounded",
-              "transition-opacity duration-200 ease-linear",
-              "hover:opacity-80",
-              "focus-visible:outline focus-visible:outline-current focus-visible:outline-offset-2"
-            )}
-            href={(item as any).href}
-            aria-label={itemAriaLabel || "logo link"}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
+          <a href={(item as any).href} target="_blank" rel="noreferrer noopener" className="block hover:opacity-80 transition-opacity">
             {content}
           </a>
-        ) : (
-          content
-        );
+        ) : content;
 
         return (
           <li
             className={cx(
-              "flex-none mr-[var(--logoloop-gap)] text-[length:var(--logoloop-logoHeight)] leading-[1]",
-              scaleOnHover && "overflow-visible group/item"
+              "flex-none mr-[var(--logoloop-gap)] h-[var(--logoloop-logoHeight)] flex items-center",
+              scaleOnHover && "group/item transition-transform hover:scale-110 duration-300"
             )}
             key={key}
-            role="listitem"
           >
             {inner}
           </li>
@@ -153,113 +102,53 @@ export const LogoLoop = React.memo<LogoLoopProps>(
       [scaleOnHover]
     );
 
-    // Render exactly 2 copies for seamless CSS marquee (0% → -50%)
-    const logoLists = useMemo(
-      () =>
-        [0, 1].map((copyIndex) => (
-          <ul
-            className="flex items-center flex-shrink-0"
-            key={`copy-${copyIndex}`}
-            role="list"
-            aria-hidden={copyIndex > 0}
-          >
-            {logos.map((item, itemIndex) =>
-              renderLogoItem(item, `${copyIndex}-${itemIndex}`)
-            )}
-          </ul>
-        )),
-      [logos, renderLogoItem]
-    );
-
-    const cssVariables = useMemo(
-      () =>
-      ({
-        "--logoloop-gap": `${gap}px`,
-        "--logoloop-logoHeight": `${logoHeight}px`,
-        ...(fadeOutColor && { "--logoloop-fadeColor": fadeOutColor }),
-      } as React.CSSProperties),
-      [gap, logoHeight, fadeOutColor]
-    );
-
-    const rootClasses = useMemo(
-      () =>
-        cx(
-          "relative overflow-x-hidden group",
-          scaleOnHover && "py-[calc(var(--logoloop-logoHeight)*0.1)]",
-          className
-        ),
-      [scaleOnHover, className]
-    );
-
-    const containerStyle = useMemo(
-      (): React.CSSProperties => ({
-        width: toCssLength(width) ?? "100%",
-        ...cssVariables,
-        ...style,
-      }),
-      [width, cssVariables, style]
+    const logoList = (
+      <ul className="flex items-center" role="list">
+        {logos.map((item, i) => renderLogoItem(item, i))}
+      </ul>
     );
 
     return (
       <div
-        className={rootClasses}
+        className={cx("relative overflow-hidden w-full group", className)}
         style={{
-          ...containerStyle,
-          minHeight: toCssLength(logoHeight) // Reserve height to prevent CLS
-        }}
+          width: toCssLength(width) ?? "100%",
+          ...style,
+          "--logoloop-gap": `${gap}px`,
+          "--logoloop-logoHeight": `${logoHeight}px`,
+          "--duration": `${duration}s`,
+          "--direction": direction === "right" ? "reverse" : "normal",
+        } as React.CSSProperties}
         role="region"
         aria-label={ariaLabel}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
+        {/* Gradients */}
         {fadeOut && (
           <>
-            <div
-              aria-hidden
-              className={cx(
-                "pointer-events-none absolute inset-y-0 left-0 z-[1]",
-                "w-[clamp(24px,8%,120px)]",
-                "bg-[linear-gradient(to_right,var(--logoloop-fadeColor,#ffffff)_0%,rgba(0,0,0,0)_100%)]",
-                "dark:bg-[linear-gradient(to_right,#0b0b0b_0%,rgba(0,0,0,0)_100%)]"
-              )}
-            />
-            <div
-              aria-hidden
-              className={cx(
-                "pointer-events-none absolute inset-y-0 right-0 z-[1]",
-                "w-[clamp(24px,8%,120px)]",
-                "bg-[linear-gradient(to_left,var(--logoloop-fadeColor,#ffffff)_0%,rgba(0,0,0,0)_100%)]",
-                "dark:bg-[linear-gradient(to_left,#0b0b0b_0%,rgba(0,0,0,0)_100%)]"
-              )}
-            />
+            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none" style={{ '--tw-gradient-from': fadeOutColor } as any} />
+            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none" style={{ '--tw-gradient-from': fadeOutColor } as any} />
           </>
         )}
 
-        {/* CSS-animated marquee track — zero JS thread cost */}
+        {/* Marquee Track */}
         <div
-          className="flex w-max select-none will-change-transform"
+          className={cx(
+            "flex w-max will-change-transform",
+            pauseOnHover && "group-hover:[animation-play-state:paused]"
+          )}
           style={{
-            animation: `logoloop-marquee ${animationDuration} linear infinite`,
-            animationDirection: animationDirection,
-            animationPlayState: isHovered ? "paused" : "running",
+            animation: `logoloop-scroll var(--duration) linear infinite var(--direction)`,
           }}
         >
-          {logoLists}
+          {/* Render two copies for seamless loop */}
+          {logoList}
+          {logoList}
         </div>
 
         <style jsx>{`
-          @keyframes logoloop-marquee {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-50%);
-            }
-          }
-          @media (prefers-reduced-motion: reduce) {
-            div {
-              animation: none !important;
-            }
+          @keyframes logoloop-scroll {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
           }
         `}</style>
       </div>
