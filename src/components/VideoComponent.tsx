@@ -44,12 +44,18 @@ export default function VideoComponent({ url, poster, lazy = false }: Props) {
           playsInline
           poster={poster}
           className="w-full h-full object-cover"
-          preload="none"
+          preload="metadata"
           aria-hidden="true"
           width={1920}
           height={1080}
         >
           <source src={url} />
+          <track
+            kind="captions"
+            src="/captions.vtt"
+            label="English"
+            default={false}
+          />
         </video>
       ) : (
         // Placeholder while lazy-waiting — show poster as static image

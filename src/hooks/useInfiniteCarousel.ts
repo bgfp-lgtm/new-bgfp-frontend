@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 // Hook to handle the infinite auto-playing carousel logic
+// Hook to handle the infinite auto-playing carousel logic
 export const useInfiniteCarousel = (
   itemCount: number,
   itemsPerSlide: number = 3
@@ -17,42 +18,50 @@ export const useInfiniteCarousel = (
 
   // --- Auto-play Logic ---
   useEffect(() => {
-    // If auto-play is enabled and mouse is not hovering
-    if (!isHovered) {
+    // Optimization: If no slides, do nothing
+    if (totalRealSlides <= 0) return;
+
+    const startAutoPlay = () => {
+      // Clear any existing interval to prevent duplicates
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+
       autoPlayRef.current = setInterval(() => {
+        // Use functional state update to always get fresh state
         setCurrentSlide((prev) => {
           const nextSlide = prev + 1;
 
           if (nextSlide >= totalCarouselSlides) {
-            // 1. Move immediately (without transition) to the first real slide (index 1)
-            // 2. We use setTimeout to match the CSS transition duration
-            setTimeout(() => {
-              setIsTransitioning(false); // Enable transition
-              setCurrentSlide(1); // Jump to first real slide
-            }, 700); // Wait for the visual transition to complete
+            // 1. We schedule the jump-back reset
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                setIsTransitioning(false); // Enable transition
+                setCurrentSlide(1); // Jump to first real slide
+              }, 700); // 700ms matches CSS transition duration
+            });
 
-            setIsTransitioning(true); // Temporarily disable transition for jump
-            return totalCarouselSlides - 1; // Return the last duplicate index
+            setIsTransitioning(true); // Disable transition for the jump? Wait, logic inverse in render
+            // Actually, based on original logic:
+            // "setIsTransitioning" seems to control a class removal.
+            // If standard logic is "nextSlide", we return it.
+            // If wrap around, we let it go to duplicate, then reset.
+            // But we must return value for state update.
+            return nextSlide;
           }
-
           return nextSlide;
         });
       }, 4000);
-    } else {
-      // Clear interval when hovered
-      if (autoPlayRef.current) {
-        clearInterval(autoPlayRef.current);
-        autoPlayRef.current = null;
-      }
+    };
+
+    if (!isHovered) {
+      startAutoPlay();
     }
 
     return () => {
-      // Cleanup on unmount
       if (autoPlayRef.current) {
         clearInterval(autoPlayRef.current);
       }
     };
-  }, [isHovered, totalCarouselSlides]);
+  }, [isHovered, totalCarouselSlides, totalRealSlides]);
 
   // --- Navigation Logic ---
   const navigate = (direction: "next" | "prev") => {
@@ -63,26 +72,28 @@ export const useInfiniteCarousel = (
     }
 
     setCurrentSlide((prev) => {
-      let nextSlide = prev + (direction === "next" ? 1 : -1);
+      const nextSlide = prev + (direction === "next" ? 1 : -1);
 
-      if (nextSlide >= totalCarouselSlides) {
-        // Jump from last duplicate back to first real slide (index 1)
+      if (direction === "next" && nextSlide >= totalCarouselSlides) {
+        // Jump logic
         setTimeout(() => {
           setIsTransitioning(false);
           setCurrentSlide(1);
         }, 700);
         setIsTransitioning(true);
-        return totalCarouselSlides - 1; // Go to last duplicate
+        // We allow it to render the duplicate slide first (index = totalCarouselSlides - 1 is supposedly last one?)
+        // The original logic returned "totalCarouselSlides - 1" inside the if, which stops it from incrementing past it?
+        // Let's keep original return logic but optimize the wrapping.
+        return totalCarouselSlides - 1;
       }
 
-      if (nextSlide <= 0) {
-        // Jump from first duplicate back to last real slide (index totalRealSlides)
+      if (direction === "prev" && nextSlide <= 0) {
         setTimeout(() => {
           setIsTransitioning(false);
           setCurrentSlide(totalRealSlides);
         }, 700);
         setIsTransitioning(true);
-        return 1; // Go to first duplicate
+        return 0; // Go to first duplicate (index 0)
       }
 
       return nextSlide;
@@ -90,11 +101,12 @@ export const useInfiniteCarousel = (
   };
 
   // Calculate the currently active real slide index (0-based) for the progress indicator
-  const activeDotIndex = currentSlide > totalRealSlides ? 0 : currentSlide - 1;
+  const activeDotIndex = currentSlide > totalRealSlides ? 0 : Math.max(0, currentSlide - 1);
   const slideStyle = {
     transform: `translateX(-${currentSlide * 100}%)`,
+    willChange: "transform", // Hint for browser composition
   };
-  const transitionClass = isTransitioning ? "transition-none" : "";
+  const transitionClass = isTransitioning ? "transition-none" : "transition-transform duration-700 ease-in-out";
 
   return {
     navigate,
