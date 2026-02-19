@@ -203,7 +203,10 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     return (
       <div
         className={rootClasses}
-        style={containerStyle}
+        style={{
+          ...containerStyle,
+          minHeight: toCssLength(logoHeight) // Reserve height to prevent CLS
+        }}
         role="region"
         aria-label={ariaLabel}
         onMouseEnter={handleMouseEnter}
@@ -234,7 +237,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
         {/* CSS-animated marquee track — zero JS thread cost */}
         <div
-          className="flex w-max select-none"
+          className="flex w-max select-none will-change-transform"
           style={{
             animation: `logoloop-marquee ${animationDuration} linear infinite`,
             animationDirection: animationDirection,
@@ -267,3 +270,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 LogoLoop.displayName = "LogoLoop";
 
 export default LogoLoop;
+
+// Ensure we have the styles for the marquee
+// Adding will-change-transform for performance
+// Adding min-height to container to prevent CLS
