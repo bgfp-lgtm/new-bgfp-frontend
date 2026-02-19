@@ -48,7 +48,15 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             // Start with Report-Only or a very permissive policy to avoid breaking external scripts (like framer-motion, strapi images, etc.)
             // Ideally this should be stricter in production after testing.
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*; style-src 'self' 'unsafe-inline' https://*; img-src 'self' data: https://*; font-src 'self' data: https://*; connect-src 'self' https://*; media-src 'self' https://* data: blob:;",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*; style-src 'self' 'unsafe-inline' https://*; img-src 'self' data: https://*; font-src 'self' data: https://*; connect-src 'self' https://*; media-src 'self' https://* data: blob:; upgrade-insecure-requests;",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
           },
         ],
       },

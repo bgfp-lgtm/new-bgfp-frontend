@@ -114,6 +114,7 @@ export default function Services({ data }: any) {
                       >
                         <span className="mr-2">
                           {card.link?.name || "Learn More"}
+                          <span className="sr-only"> about {card.title}</span>
                         </span>
                         <BsArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
                       </Link>

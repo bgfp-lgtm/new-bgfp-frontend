@@ -18,9 +18,8 @@ const StarRating = ({ rating }: { rating: number }) => {
       {[...Array(5)].map((_, i) => (
         <LuStar
           key={i}
-          className={`w-4 h-4 ${
-            i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-          }`}
+          className={`w-4 h-4 ${i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+            }`}
         />
       ))}
     </div>
@@ -141,13 +140,15 @@ export default function CustomerTestimonials({ data }: any) {
               <button
                 key={index}
                 onClick={() => api?.scrollTo(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  current === index
+                className={`relative transition-all duration-300 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 ${current === index
                     ? "w-8 h-2 bg-gray-800"
                     : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
-                }`}
+                  }`}
                 aria-label={`Go to slide ${index + 1}`}
-              />
+              >
+                {/* Visual hidden hit area expansion to 48x48px (min 44px) */}
+                <span className="absolute -inset-5" />
+              </button>
             ))}
           </div>
         </motion.div>
