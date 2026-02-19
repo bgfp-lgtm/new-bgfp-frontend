@@ -29,7 +29,7 @@ export default function Services({ data }: any) {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="text-sm font-bold tracking-widest text-red-600 uppercase"
           >
             What We Do
@@ -37,7 +37,7 @@ export default function Services({ data }: any) {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-bold text-gray-900"
           >
@@ -46,7 +46,7 @@ export default function Services({ data }: any) {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: 0.2 }}
             className="w-24 h-1 bg-red-600 mx-auto rounded-full mt-6"
           />
@@ -56,40 +56,41 @@ export default function Services({ data }: any) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {data.cards.map((card: any, index: number) => {
             const icon = iconMap[card.title] || <BsCode className="w-6 h-6" />;
+            const ariaLabel = `Learn more about ${card.title}`;
 
             return (
               <motion.div
                 key={card.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="group relative h-[500px] w-full overflow-hidden rounded-3xl cursor-pointer"
+                className="group relative h-[500px] w-full overflow-hidden rounded-3xl cursor-pointer bg-gray-200"
               >
                 {/* 1. Background Image with Zoom Effect */}
-                <div className="absolute inset-0 w-full h-full">
+                <div className="absolute inset-0 w-full h-full will-change-transform">
                   <Image
                     src={card.image.url}
-                    alt={card.title}
+                    alt={card.title} // keep alt text for SEO
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110 hover:opacity-20"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    // Optimization: Tighter sizes based on 3-column grid design
+                    sizes="(max-width: 768px) 95vw, (max-width: 1200px) 50vw, 33vw"
                     priority={index < 2}
                   />
                   {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/95 hover:backdrop-blur-md via-black/70 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/95 hover:backdrop-blur-md via-black/70 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300 pointer-events-none" />
                 </div>
 
                 {/* 2. Floating Icon Badge */}
-                <div className="absolute top-6 right-6 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 text-white shadow-lg group-hover:bg-red-600 group-hover:border-red-600 transition-colors duration-300">
+                <div className="absolute top-6 right-6 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 text-white shadow-lg group-hover:bg-red-600 group-hover:border-red-600 transition-colors duration-300 z-10">
                   {icon}
                 </div>
 
                 {/* 3. Content Area */}
-                {/* Added 'pb-12' here to lift everything up from the bottom edge */}
-                <div className="absolute bottom-0 left-0 w-full px-8 pb-12 flex flex-col justify-end h-full pointer-events-none">
+                <div className="absolute bottom-0 left-0 w-full px-8 pb-12 flex flex-col justify-end h-full pointer-events-none z-10">
                   {/* Container that slides up on hover */}
-                  <div className="transform transition-transform duration-500 translate-y-8 group-hover:translate-y-0">
+                  <div className="transform transition-transform duration-500 translate-y-8 group-hover:translate-y-0 will-change-transform">
                     <h3 className="text-2xl font-bold text-white mb-3 leading-tight drop-shadow-md">
                       {card.title}
                     </h3>
@@ -104,12 +105,12 @@ export default function Services({ data }: any) {
                     </div>
 
                     {/* Call to Action Button - RED PILL */}
-                    {/* Added 'mt-6' to give breathing room between text and button */}
                     <div className="mt-6 pointer-events-auto">
                       <Link
                         href={card.link?.path || "#"}
                         className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-red-600/30"
-                        aria-label={`Learn more about ${card.title}`}
+                        aria-label={ariaLabel}
+                        title={ariaLabel}
                       >
                         <span className="mr-2">
                           {card.link?.name || "Learn More"}

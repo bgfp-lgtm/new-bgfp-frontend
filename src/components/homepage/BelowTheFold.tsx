@@ -8,9 +8,11 @@ import dynamic from "next/dynamic";
 // spike on mobile CPUs.
 const CustomerTestimonials = dynamic(
     () => import("@/components/homepage/CustomerTestimonials"),
+    { ssr: false }
 );
 const Loop = dynamic(
     () => import("@/components/homepage/Loop"),
+    { ssr: false }
 );
 const OtherServices = dynamic(
     () => import("@/components/homepage/OtherServices"),

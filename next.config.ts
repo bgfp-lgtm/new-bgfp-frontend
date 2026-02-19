@@ -27,6 +27,33 @@ const nextConfig: NextConfig = {
   },
 
   /* other config options here */
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "Content-Security-Policy",
+            // Start with Report-Only or a very permissive policy to avoid breaking external scripts (like framer-motion, strapi images, etc.)
+            // Ideally this should be stricter in production after testing.
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*; style-src 'self' 'unsafe-inline' https://*; img-src 'self' data: https://*; font-src 'self' data: https://*; connect-src 'self' https://*; media-src 'self' https://* data: blob:;",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
