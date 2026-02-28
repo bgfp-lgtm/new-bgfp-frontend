@@ -108,13 +108,13 @@ export default function ProjectPage({
                   <button
                     key={project.id}
                     disabled={!hasLink}
+                    suppressHydrationWarning // ADD THIS
                     onClick={() => {
                       if (hasLink) {
                         setOpenVideoUrl(project.link);
                         setOpenTitle(project.title);
                       }
                     }}
-                    // GROUP for hover effects
                     className={`group relative w-full aspect-video rounded-3xl overflow-hidden text-left focus:outline-none transition-all duration-500 ${
                       hasLink ? "cursor-pointer" : "cursor-default"
                     }`}

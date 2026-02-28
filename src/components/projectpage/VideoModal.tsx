@@ -19,7 +19,6 @@ export default function VideoModal({
 }: VideoModalProps) {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Reset loading state whenever the modal opens or URL changes
   useEffect(() => {
     if (open) {
       setIsLoading(true);
@@ -32,7 +31,6 @@ export default function VideoModal({
     };
     if (open) {
       document.addEventListener("keydown", onKeyDown);
-      // Prevent scrolling on the body
       document.body.style.overflow = "hidden";
     }
     return () => {
@@ -41,7 +39,6 @@ export default function VideoModal({
     };
   }, [open, onClose]);
 
-  // 1. Optimize: Memoize the URL parsing so it doesn't run on every render
   const embedUrl = useMemo(() => {
     if (!videoUrl) return null;
     return getEmbedUrl(videoUrl);
@@ -51,12 +48,11 @@ export default function VideoModal({
 
   return (
     <div
-      className="fixed inset-0 z-9999 flex items-center justify-center"
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
       role="dialog"
       aria-modal="true"
       aria-label={title || "Video modal"}
     >
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
         onClick={onClose}
@@ -64,7 +60,6 @@ export default function VideoModal({
 
       <div className="relative z-10 w-full max-w-5xl px-4 animate-in fade-in zoom-in-95 duration-300">
         <div className="relative rounded-xl overflow-hidden shadow-2xl bg-black border border-white/10">
-          {/* 2. UX Improvement: Loading Spinner */}
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center z-0">
               <div className="w-10 h-10 border-4 border-white/20 border-t-red-500 rounded-full animate-spin" />
@@ -77,11 +72,13 @@ export default function VideoModal({
                 className="w-full h-full"
                 src={embedUrl}
                 title={title || "Video"}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
+                // UPDATED: Added comprehensive permissions
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+                // UPDATED: 'no-referrer-when-downgrade' helps providers verify your domain
+                referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen
-                loading="eager" // Force immediate loading
-                onLoad={() => setIsLoading(false)} // Hide spinner when loaded
+                loading="eager"
+                onLoad={() => setIsLoading(false)}
               />
             ) : (
               <video
@@ -91,15 +88,14 @@ export default function VideoModal({
                 controls
                 autoPlay
                 playsInline
-                preload="auto" // 3. Optimize: Force browser to buffer immediately
-                onCanPlay={() => setIsLoading(false)} // Hide spinner when ready
-                onWaiting={() => setIsLoading(true)} // Show spinner if buffering
+                preload="auto"
+                onCanPlay={() => setIsLoading(false)}
+                onWaiting={() => setIsLoading(true)}
               />
             )}
           </div>
         </div>
 
-        {/* Close Button */}
         <button
           aria-label="Close"
           onClick={onClose}
@@ -108,7 +104,6 @@ export default function VideoModal({
           <RxCross2 className="w-6 h-6" />
         </button>
 
-        {/* External Link Button */}
         <a
           href={videoUrl}
           target="_blank"
@@ -123,14 +118,16 @@ export default function VideoModal({
   );
 }
 
-// Helper function moved outside component to prevent recreation
 const getEmbedUrl = (url: string): string | null => {
   let embedUrl: string | null = null;
+
+  // Get current domain origin for the security handshake
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
 
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
     const videoIdMatch =
       url.match(
-        /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+        /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
       ) || url.match(/embed\/([^?]+)/);
     const videoId = videoIdMatch ? videoIdMatch[1] : null;
     if (videoId) {
@@ -138,7 +135,8 @@ const getEmbedUrl = (url: string): string | null => {
         autoplay: "1",
         rel: "0",
         playsinline: "1",
-        mute: "0",
+        enablejsapi: "1", // Required for origin tracking
+        origin: origin, // This tells YouTube it's safe to load on your site
       });
       embedUrl = `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
     }
@@ -149,7 +147,8 @@ const getEmbedUrl = (url: string): string | null => {
     const hash = hashMatch ? hashMatch[1] : null;
 
     if (videoId) {
-      let vimeoUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+      // Added dnt=1 (Do Not Track) which can bypass some restrictive embed settings
+      let vimeoUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&dnt=1`;
       if (hash) {
         vimeoUrl += `&h=${hash}`;
       }
