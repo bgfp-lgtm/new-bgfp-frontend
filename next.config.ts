@@ -16,16 +16,18 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "delightful-trust-ed829e5176.media.strapiapp.com",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "delightful-trust-ed829e5176.strapiapp.com",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "i.pravatar.cc",
+        pathname: "/**",
       },
-      // ---------------------
     ],
   },
 
@@ -49,9 +51,17 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            // Start with Report-Only or a very permissive policy to avoid breaking external scripts (like framer-motion, strapi images, etc.)
-            // Ideally this should be stricter in production after testing.
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*; style-src 'self' 'unsafe-inline' https://*; img-src 'self' data: https://*; font-src 'self' data: https://*; connect-src 'self' https://*; media-src 'self' https://* data: blob:; upgrade-insecure-requests;",
+            // UPDATED: Added frame-src to allow YouTube and Vimeo embeds
+            value:
+              "default-src 'self'; " +
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*; " +
+              "style-src 'self' 'unsafe-inline' https://*; " +
+              "img-src 'self' data: https://*; " +
+              "font-src 'self' data: https://*; " +
+              "connect-src 'self' https://*; " +
+              "media-src 'self' https://* data: blob:; " +
+              "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; " +
+              "upgrade-insecure-requests;",
           },
           {
             key: "Referrer-Policy",

@@ -48,7 +48,7 @@ const QuoteFormModal = ({
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -229,8 +229,8 @@ const QuoteFormModal = ({
               {status === "submitting"
                 ? "Processing..."
                 : status === "success"
-                ? "Sent!"
-                : "Send Request"}
+                  ? "Sent!"
+                  : "Send Request"}
             </span>
             {status === "success" ? (
               <FaPaperPlane />
@@ -349,7 +349,7 @@ const ContactModal = ({
 
 export default function CTASectionTwo() {
   const [activeModal, setActiveModal] = useState<"quote" | "contact" | null>(
-    null
+    null,
   );
 
   return (
@@ -397,6 +397,7 @@ export default function CTASectionTwo() {
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <button
                 onClick={() => setActiveModal("quote")}
+                suppressHydrationWarning
                 className="group relative inline-flex items-center justify-center bg-transparent text-white border border-red-600 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] cursor-pointer hover:-translate-y-1"
               >
                 <span className="mr-2">{"Get Your Quote"}</span>
@@ -405,6 +406,7 @@ export default function CTASectionTwo() {
 
               <button
                 onClick={() => setActiveModal("contact")}
+                suppressHydrationWarning
                 className="group inline-flex items-center justify-center bg-transparent border border-white/50 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:bg-white hover:text-black cursor-pointer hover:border-white/40"
               >
                 <BsTelephone className="w-5 h-5 mr-2 text-gray-400 group-hover:text-black transition-colors" />
