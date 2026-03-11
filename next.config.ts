@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   images: {
+    // This is the key fix for the "url parameter not allowed" error in containers
+    unoptimized: true, 
     remotePatterns: [
       {
         protocol: "https",
@@ -52,12 +54,11 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            // UPDATED: Added frame-src to allow YouTube and Vimeo embeds
             value:
               "default-src 'self'; " +
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*; " +
               "style-src 'self' 'unsafe-inline' https://*; " +
-              "img-src 'self' data: https://*; " +
+              "img-src 'self' data: blob: https://*; " + // Added blob: to img-src
               "font-src 'self' data: https://*; " +
               "connect-src 'self' https://*; " +
               "media-src 'self' https://* data: blob:; " +
