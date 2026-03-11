@@ -29,8 +29,8 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # Cloud Run expects the container to listen on port 8080 by default
-ENV PORT 3000
-EXPOSE 3000
+ENV PORT 8080
+EXPOSE 8080
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -43,4 +43,4 @@ COPY --from=builder /app/package.json ./package.json
 USER nextjs
 
 # Start Next.js on port 8080
-CMD ["npm", "start", "--", "-p", "3000"]
+CMD ["npm", "start", "--", "-p", "8080"]
