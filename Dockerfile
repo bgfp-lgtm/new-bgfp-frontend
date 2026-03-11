@@ -16,7 +16,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Pass environment variables to the build phase
-ARG NEXT_PUBLIC_STRAPI_API_URL
+ARG NEXT_PUBLIC_STRAPI_API_URL="https://delightful-trust-ed829e5176.strapiapp.com"
 ENV NEXT_PUBLIC_STRAPI_API_URL=$NEXT_PUBLIC_STRAPI_API_URL
 
 RUN npm run build
