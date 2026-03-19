@@ -14,9 +14,9 @@ export default function OurBrandsLogos({ data }: any) {
           height={brand.height || 45}
           className="h-[45px] w-auto object-contain"
           unoptimized
-        // Logos are usually below the fold or small enough that lazy is fine, 
-        // but if they are in viewport, priority might be needed. 
-        // Given "OurBrandsLogos", it's likely further down -> lazy default is good.
+          // Logos are usually below the fold or small enough that lazy is fine,
+          // but if they are in viewport, priority might be needed.
+          // Given "OurBrandsLogos", it's likely further down -> lazy default is good.
         />
       ),
       href: brand.url?.startsWith("http") ? brand.url : undefined, // Optional link if data has it
@@ -33,7 +33,7 @@ export default function OurBrandsLogos({ data }: any) {
             <div className="relative h-20 w-full overflow-hidden transition-all duration-500">
               <LogoLoop
                 logos={logos}
-                speed={40}
+                speed={800}
                 direction="left"
                 logoHeight={45}
                 gap={80}
