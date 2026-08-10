@@ -1,5 +1,18 @@
 import { getGlobalData, getPageBySlug } from "@/data/loader";
 import AboutUs from "@/components/aboutpage/AboutUs";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const response = await getPageBySlug("about");
+  return buildMetadata({
+    seo: response?.data?.[0]?.seo,
+    path: "/about-us",
+    fallbackTitle: "About Us | Birthgiver Film Productions",
+    fallbackDescription:
+      "Meet the team behind Birthgiver Film Productions — a creative film production studio delivering cinematic video, marketing and software work.",
+  });
+}
 
 type Props = {};
 

@@ -12,6 +12,18 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 import CTASectionTwo from "@/components/CTASectionTwo";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  // The `blog` content type has no Strapi `seo` component.
+  return buildMetadata({
+    path: "/blog",
+    fallbackTitle: "Blog | Birthgiver Film Productions",
+    fallbackDescription:
+      "Insights on film production, video marketing and creative strategy from the Birthgiver Film Productions team.",
+  });
+}
 
 export default async function BlogPage() {
   const { data: posts } = await getBlogs();

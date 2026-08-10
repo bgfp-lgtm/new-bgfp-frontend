@@ -12,6 +12,22 @@ import LogoLoop from "@/components/homepage/LogoLoop";
 import CTASectionTwo from "@/components/CTASectionTwo";
 import CinematicCarousel from "@/components/film/CinematicCarousel";
 import ServiceCard from "@/components/film/ServiceCard";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  // NOTE: no `marketing-strategy` entry exists in Strapi yet, so `seo` is
+  // undefined and the fallbacks below ship. Adding the entry picks it up.
+  const response = await getPageBySlug("marketing-strategy");
+  return buildMetadata({
+    seo: response?.data?.[0]?.seo,
+    path: "/marketing-strategy",
+    fallbackTitle:
+      "Marketing Strategy Services UK | Birthgiver Film Productions",
+    fallbackDescription:
+      "Video-led marketing strategy that turns brand stories into measurable growth — campaign planning, content strategy and distribution.",
+  });
+}
 
 export default async function MarketingStrategyPage() {
   // 1. Fetch Global Data (for CTA)
@@ -171,7 +187,7 @@ export default async function MarketingStrategyPage() {
         <section className="w-full py-10">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
             <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-12">
-              Our Brand Partners
+              Brands we&apos;ve filmed for
             </h3>
             <div className="relative h-20 w-full overflow-hidden transition-all duration-500">
               <LogoLoop
