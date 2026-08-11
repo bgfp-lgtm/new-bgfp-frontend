@@ -208,6 +208,20 @@ const pageBySlugQuery = (slug: string) =>
       },
     },
     populate: {
+      seo: {
+        populate: {
+          metaImage: {
+            fields: ["url", "name"],
+          },
+          socialNetwork: {
+            populate: {
+              image: {
+                fields: ["url", "name"],
+              },
+            },
+          },
+        },
+      },
       blocks: {
         on: {
           "blocks.service": {

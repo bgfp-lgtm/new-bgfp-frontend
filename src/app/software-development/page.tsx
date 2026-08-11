@@ -13,6 +13,22 @@ import LogoLoop from "@/components/homepage/LogoLoop";
 import CTASectionTwo from "@/components/CTASectionTwo";
 import CinematicCarousel from "@/components/film/CinematicCarousel";
 import ServiceCard from "@/components/film/ServiceCard";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  // NOTE: no `software-development` entry exists in Strapi yet, so `seo` is
+  // undefined and the fallbacks below ship. Adding the entry picks it up.
+  const response = await getPageBySlug("software-development");
+  return buildMetadata({
+    seo: response?.data?.[0]?.seo,
+    path: "/software-development",
+    fallbackTitle:
+      "Software & Website Development UK | Birthgiver Film Productions",
+    fallbackDescription:
+      "Custom software and website development — from marketing sites to bespoke web applications, built and shipped by Birthgiver.",
+  });
+}
 
 export default async function SoftwareDevelopmentPage() {
   // 1. Fetch Global Data (for CTA)
@@ -172,7 +188,7 @@ export default async function SoftwareDevelopmentPage() {
         <section className="w-full py-10">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
             <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-12">
-              Our Brand Partners
+              Brands we&apos;ve filmed for
             </h3>
             <div className="relative h-20 w-full overflow-hidden transition-all duration-500">
               <LogoLoop

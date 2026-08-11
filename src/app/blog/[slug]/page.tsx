@@ -13,8 +13,29 @@ import {
 import CTASection from "@/components/CTASection";
 import Image from "next/image";
 import CTASectionTwo from "@/components/CTASectionTwo";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const { data } = await getBlogBySlug(slug);
+  const post = data?.[0];
+
+  // The `blog` content type has no Strapi `seo` component, so metadata is
+  // derived from the post itself.
+  return buildMetadata({
+    path: `/blog/${slug}`,
+    fallbackTitle: post?.title
+      ? `${post.title} | Birthgiver Film Productions`
+      : "Blog | Birthgiver Film Productions",
+    fallbackDescription:
+      post?.subtitle ||
+      "Insights on film production, video marketing and creative strategy from the Birthgiver Film Productions team.",
+    ogType: "article",
+  });
+}
 
 export default async function BlogDetailPage({ params }: Props) {
   const { slug } = await params;

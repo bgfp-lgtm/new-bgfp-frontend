@@ -5,6 +5,19 @@ import CinematicCarousel from "@/components/film/CinematicCarousel";
 import { getGlobalData, getHomepageQuery, getProject } from "@/data/loader";
 import OurBrandsLogos from "@/components/OurBrandsLogos";
 import BelowTheFold from "@/components/homepage/BelowTheFold";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const homepage = await getHomepageQuery();
+  return buildMetadata({
+    seo: homepage?.data?.seo,
+    path: "/",
+    fallbackTitle: "Birthgiver Film Productions",
+    fallbackDescription:
+      "Comprehensive film and video production services",
+  });
+}
 
 export default async function Home() {
   const response = await getHomepageQuery();

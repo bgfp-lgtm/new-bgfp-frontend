@@ -28,7 +28,7 @@ export default function OurBrandsLogos({ data }: any) {
         <section className="w-full">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
             <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-12">
-              Our Brand Partners
+              Brands we&apos;ve filmed for
             </h3>
             <div className="relative h-20 w-full overflow-hidden transition-all duration-500">
               <LogoLoop

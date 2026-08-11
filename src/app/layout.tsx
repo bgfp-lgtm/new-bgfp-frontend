@@ -5,8 +5,8 @@ import "./globals.css";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { getGlobalData, getHomepageQuery } from "@/data/loader";
-import { getStrapiMedia } from "@/lib/utils";
+import { getGlobalData } from "@/data/loader";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { DM_Sans } from "next/font/google";
 
 const dmSans = DM_Sans({
@@ -15,56 +15,21 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
 });
 
-// Define the consistent base URL for the entire project
-const BASE_URL = "https://www.birthgiverfilmproductions.com";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const homepage = await getHomepageQuery();
-  const seo = homepage?.data?.seo;
-
-  // Determine the canonical URL with a consistent fallback
-  const canonicalUrl = seo?.canonicalURL || BASE_URL;
-
-  const ogImage = seo?.socialNetwork?.[0]?.image?.url
-    ? getStrapiMedia(seo.socialNetwork[0].image.url)
-    : "/logofav.png";
-
-  return {
-    title: seo?.metaTitle || "Birthgiver Film Productions",
-    description:
-      seo?.metaDescription ||
-      "Comprehensive film and video production services",
-    keywords: seo?.keywords,
-    robots: seo?.metaRobots || "index, follow",
-    alternates: {
-      canonical: canonicalUrl, // Uses the centralized variable
-    },
-    icons: {
-      icon: "/logofav.png",
-    },
-    openGraph: {
-      title: seo?.socialNetwork?.[0]?.title || seo?.metaTitle,
-      description: seo?.socialNetwork?.[0]?.description || seo?.metaDescription,
-      url: canonicalUrl, // Strictly matches the canonical URL
-      siteName: "Birthgiver Film Productions",
-      images: [
-        {
-          url: ogImage || "/logofav.png",
-          width: 1200,
-          height: 630,
-          alt: seo?.metaTitle,
-        },
-      ],
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: seo?.metaTitle,
-      description: seo?.metaDescription,
-      images: [ogImage || ""],
-    },
-  };
-}
+/**
+ * Root metadata is site-wide DEFAULTS only.
+ *
+ * Deliberately no `title`, `description`, or `alternates.canonical` here:
+ * every value set at this level is inherited by every route, which is how
+ * the whole site ended up sharing the homepage's title and canonicalling to
+ * `/`. Per-route values live in each route's own `generateMetadata`.
+ */
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  icons: {
+    icon: "/logofav.png",
+  },
+};
 
 export default async function RootLayout({
   children,

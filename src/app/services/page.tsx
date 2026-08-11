@@ -6,7 +6,20 @@ import { getGlobalData, getPageBySlug, getHomepageQuery } from "@/data/loader";
 import LogoLoop from "@/components/homepage/LogoLoop";
 import { getStrapiMedia } from "@/lib/utils";
 import NewsletterSection from "@/components/NewsletterSection";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 // 1. Import the Newsletter Component
+
+export async function generateMetadata(): Promise<Metadata> {
+  const response = await getPageBySlug("services");
+  return buildMetadata({
+    seo: response?.data?.[0]?.seo,
+    path: "/services",
+    fallbackTitle: "Services | Birthgiver Film Productions",
+    fallbackDescription:
+      "Film production, marketing strategy and software development services from Birthgiver Film Productions.",
+  });
+}
 
 export default async function Services() {
   // --- Data Fetching ---

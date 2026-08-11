@@ -12,6 +12,22 @@ import LogoLoop from "@/components/homepage/LogoLoop";
 import CTASectionTwo from "@/components/CTASectionTwo";
 import CinematicCarousel from "@/components/film/CinematicCarousel";
 import ServiceCard from "@/components/film/ServiceCard";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const response = await getPageBySlug("film-production");
+  return buildMetadata({
+    seo: response?.data?.[0]?.seo,
+    path: "/film-production",
+    // NOTE: this page's Strapi `seo.metaTitle` is currently empty, so this
+    // fallback is what actually ships. Set metaTitle in Strapi to override.
+    fallbackTitle:
+      "Film Production Services UK | Birthgiver Film Productions",
+    fallbackDescription:
+      "Full-service film production in the UK — from concept to final cut. Corporate video, commercials and cinematic brand storytelling.",
+  });
+}
 
 export default async function FilmProductionPage() {
   const globalResponse = await getGlobalData();
@@ -171,7 +187,7 @@ export default async function FilmProductionPage() {
         <section className="w-full py-10">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
             <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-12">
-              Our Brand Partners
+              Brands we&apos;ve filmed for
             </h3>
             <div className="relative h-20 w-full overflow-hidden transition-all duration-500">
               <LogoLoop
